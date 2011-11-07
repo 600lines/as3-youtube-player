@@ -40,7 +40,7 @@ package com.irzal
 			{
 				var url:String = data.getData(Data.MEDIA_THUMBNAIL, i);
 				var id:String = data.getData(Data.MEDIA_ID, i);
-				
+				trace(id);
 				thumbs[i] = new Tloader();
 				thumbs[i].loadThumbs(url,id);
 				if (i > 0)
