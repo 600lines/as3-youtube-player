@@ -25,12 +25,12 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Documents and Settings\Fahmi Idris Yusuf\My Documents\DEDET\projects\ytVideo\src\com\irzal\Main.as</path-element>
+    <path-element>C:\Documents and Settings\Fahmi Idris Yusuf\My Documents\DEDET\projects\ytVideo\src\com\irzal\media\yt\VideoPlayer.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
   <default-size>
     <width>640</width>
-    <height>363</height>
+    <height>400</height>
   </default-size>
 </flex-config>
