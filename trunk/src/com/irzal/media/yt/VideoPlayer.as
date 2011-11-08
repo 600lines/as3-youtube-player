@@ -15,6 +15,7 @@ package com.irzal.media.yt
 	{
 		private var player:Object;
 		private var pLoader:Loader;
+		private var chromeless:Boolean;
 		
 		public function VideoPlayer() 
 		{
@@ -32,8 +33,8 @@ package com.irzal.media.yt
 			pLoader = new Loader();
 			pLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			pLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loadProgress);
-			pLoader.load(new URLRequest("http://www.youtube.com/v/D1fVC52Mu5I?version=3"));
-			player = pLoader.content;
+			switch
+			pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
 		}
 		
 		private function loadComplete(e:Event):void 
