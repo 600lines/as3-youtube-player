@@ -10,7 +10,7 @@ package com.irzal.media.yt.thumbs
 	 * ...
 	 * @author dedet
 	 */
-	public class Tloader extends Sprite
+	internal class Tloader extends Sprite
 	{
 		public static const CLICK:String 		= "thumbClick";
 		public static const OVER:String 		= "thumbOver";

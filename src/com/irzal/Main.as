@@ -36,25 +36,7 @@ package com.irzal
 			var i:int;
 			var thumbsLength:int = data.getDataLength();
 			
-			while (i < thumbsLength)
-			{
-				var url:String = data.getData(Data.MEDIA_THUMBNAIL, i);
-				var id:String = data.getData(Data.MEDIA_ID, i);
-				trace(id);
-				thumbs[i] = new Tloader();
-				thumbs[i].loadThumbs(url,id);
-				if (i > 0)
-				{
-					thumbs[i].x = thumbs[i - 1].x + thumbs[i - 1].width + 10;
-					thumbs[i].y = thumbs[i - 1].y;
-				} else 
-				{
-					thumbs[i].x = 10;
-					thumbs[i].y = 10;
-				}
-				addChild(thumbs[i]);
-				i++;
-			}
+			
 		}
 		
 	}
