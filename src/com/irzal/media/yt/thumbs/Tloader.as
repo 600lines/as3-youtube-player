@@ -30,7 +30,7 @@ package com.irzal.media.yt.thumbs
 	 * ...
 	 * @author dedet
 	 */
-	public class Tloader extends Sprite
+	internal class Tloader extends Sprite
 	{
 		public static const CLICK:String 		= "thumbClick";
 		public static const OVER:String 		= "thumbOver";
@@ -63,7 +63,6 @@ package com.irzal.media.yt.thumbs
 			bg.graphics.lineStyle(1, 0x888888);
 			bg.graphics.drawRect(0, 0, 119, 89);
 			bg.graphics.endFill();
-			//bg.y = 10;
 		}
 		
 		/**
