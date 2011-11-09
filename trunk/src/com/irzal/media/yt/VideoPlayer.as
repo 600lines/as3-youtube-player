@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011  Irzal Idris
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/> 
+	
+	http://irzal.com
+ */
 package com.irzal.media.yt 
 {
 	import flash.display.Loader;
@@ -33,8 +51,8 @@ package com.irzal.media.yt
 			pLoader = new Loader();
 			pLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			pLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loadProgress);
-			switch
-			pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
+			//pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
+			pLoader.load(new URLRequest("http://www.youtube.com/v/VIDEO_ID?version=3"));
 		}
 		
 		private function loadComplete(e:Event):void 
@@ -55,7 +73,14 @@ package com.irzal.media.yt
 		
 		private function stageClick(e:MouseEvent):void 
 		{
-			player.destroy();
+			try 
+			{
+				player.destroy();
+			}
+			catch (err:Error)
+			{
+				trace(err.errorID,err.message);
+			}
 			player.loadVideoById("U0hJwl-PDL8", 0, "default");
 		}
 		
