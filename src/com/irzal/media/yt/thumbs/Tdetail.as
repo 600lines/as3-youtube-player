@@ -21,6 +21,7 @@ package com.irzal.media.yt.thumbs
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.text.TextFieldType;
 	
 	/**
 	 * ...
@@ -43,15 +44,27 @@ package com.irzal.media.yt.thumbs
 			tFormat.size 				= 10;
 			
 			tField 						= new TextField();
-			tField.selectable 			= false;
+			//tField.type					= TextFieldType.INPUT;
+			tField.background			= true;
+			tField.backgroundColor		= 0x666666;
 			tField.multiline 			= true;
 			tField.mouseWheelEnabled 	= true;
-			tField.defaultTextFormat(tFormat);
+			tField.width				= 370;
+			tField.wordWrap				= true;
+			tField.defaultTextFormat	= tFormat;
 			
 			addChild(tField);
 		}
 		
+		public function set title(str:String):void
+		{
+			tField.htmlText = "<b>"+str+"</b>\n";
+		}
 		
+		public function set description(str:String):void
+		{
+			tField.htmlText += str;
+		}
 	}
 
 }

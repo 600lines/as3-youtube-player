@@ -94,10 +94,7 @@ package com.irzal.media.yt.thumbs
 			//---
 			addChildAt(loader,0);
 			destroy();
-			addEventListener(MouseEvent.CLICK, onMouseEvent);
-			addEventListener(MouseEvent.MOUSE_OVER, onMouseEvent);
-			addEventListener(MouseEvent.MOUSE_OUT, onMouseEvent);
-			addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);			
+			
 		}
 		
 		public function set duration(dur:String):void
@@ -128,25 +125,6 @@ package com.irzal.media.yt.thumbs
 			durText.defaultTextFormat = durFormat;
 			durText.text = _duration;
 			addChild(durText);
-		}
-		
-		private function onMouseEvent(e:MouseEvent):void 
-		{
-			switch(e.type)
-			{
-				case MouseEvent.CLICK:
-					dispatchEvent(new Event(Tloader.CLICK));
-				break;
-				case MouseEvent.MOUSE_OVER:
-					dispatchEvent(new Event(Tloader.OVER));
-				break;
-				case MouseEvent.MOUSE_OUT:
-					dispatchEvent(new Event(Tloader.OUT));
-				break;
-				case MouseEvent.DOUBLE_CLICK:
-					dispatchEvent(new Event(Tloader.DOUBLE_CLICK));
-				break;
-			}
 		}
 		
 		private function createProgresBar():void

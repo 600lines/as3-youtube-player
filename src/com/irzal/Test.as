@@ -1,6 +1,7 @@
 package com.irzal 
 {
 	import com.irzal.data.yt.Data;
+	import com.irzal.media.yt.thumbs.Tcontainer;
 	import com.irzal.media.yt.thumbs.Tloader;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -8,7 +9,7 @@ package com.irzal
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
-	
+	import com.irzal.media.yt.thumbs.Tevent;
 	/**
 	 * ...
 	 * @author dedet
@@ -17,34 +18,25 @@ package com.irzal
 	{
 		private var data:Data;
 		//private var thumb:Tloader;
-		private var tArray:Array = [];
+		private var container:Tcontainer;
 		public function Test() 
 		{
 			data = Data.getInstance();
 			data.loadSetup();
 			data.addEventListener(Data.COMPLETE, onData);
+			container = new Tcontainer();
 		}
 		
 		private function onData(e:Event):void 
 		{
-			var dataLength:int = data.getDataLength();
-			var i:int;
-			trace(dataLength);
-			while (i < dataLength) 
-			{
-				var id:String = data.getData(i, Data.VIDEO_ID);
-				var url:String = data.getData(i, Data.MEDIA_THUMBNAIL);
-				tArray[i] = new Tloader();
-				tArray[i].loadThumbs(id, url);
-				tArray[i].duration = data.getData(i, Data.VIDEO_DURATION);
-				if (i > 0)
-				{
-					tArray[i].x = tArray[i - 1].x + tArray[i - 1].width +5;
-				}
-				addChild(tArray[i]);
-				i += 1;
-			}
-			
+			addChild(container);
+			container.setThumbnails();
+			container.addEventListener(Tevent.CLICK, onContainer);
+		}
+		
+		private function onContainer(e:Event):void 
+		{
+			trace("over");
 		}
 	}
 
