@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011  Irzal Idris
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/> 
+	
+	http://irzal.com
+ */
 package com.irzal.media.yt.thumbs 
 {
 	import flash.display.Sprite;
@@ -6,11 +24,13 @@ package com.irzal.media.yt.thumbs
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	/**
 	 * ...
 	 * @author dedet
 	 */
-	internal class Tloader extends Sprite
+	public class Tloader extends Sprite
 	{
 		public static const CLICK:String 		= "thumbClick";
 		public static const OVER:String 		= "thumbOver";
@@ -22,25 +42,17 @@ package com.irzal.media.yt.thumbs
 		
 		private var loader:Loader;
 		
+		private var durText:TextField;
+		private var durFormat:TextFormat;
+		
+		private var _duration:String;
 		/**
 		 * 
 		 */
 		public function Tloader() 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//---
 			this.buttonMode 	= true;
 			this.mouseChildren 	= false;
-			
-			createBg();
-			createProgresBar();
-			//loadThumbs("http://i.ytimg.com/vi/U0hJwl-PDL8/default.jpg", "1234");
 		}
 		
 		private function createBg():void
@@ -51,7 +63,7 @@ package com.irzal.media.yt.thumbs
 			bg.graphics.lineStyle(1, 0x888888);
 			bg.graphics.drawRect(0, 0, 119, 89);
 			bg.graphics.endFill();
-			bg.y = 10;
+			//bg.y = 10;
 		}
 		
 		/**
@@ -59,13 +71,15 @@ package com.irzal.media.yt.thumbs
 		 * @param	url URL for thumbnail image
 		 * @param	id Video ID 
 		 */
-		public function loadThumbs(url:String, id:String):void
+		public function loadThumbs(id:String, url:String):void
 		{
 			this.name 	= id;
 			loader 		= new Loader();
 			loader.load(new URLRequest(url));
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+			createBg();
+			createProgresBar();
 		}
 		
 		private function onLoadProgress(e:ProgressEvent):void 
@@ -79,12 +93,42 @@ package com.irzal.media.yt.thumbs
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete);
 			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, onLoadProgress);
 			//---
-			addChild(loader);
+			addChildAt(loader,0);
+			destroy();
 			addEventListener(MouseEvent.CLICK, onMouseEvent);
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseEvent);
 			addEventListener(MouseEvent.MOUSE_OUT, onMouseEvent);
-			addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);
-			destroy();
+			addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);			
+		}
+		
+		public function set duration(dur:String):void
+		{
+			var _dur:int = Number(dur);
+			var strMinute:String;
+			var strSecond:String;
+			var mnt:Number = Math.floor(_dur / 60);
+			var scd:Number = Math.floor(_dur % 60);
+			(mnt < 10)? strMinute = "0" + mnt.toString():strMinute = mnt.toString();
+			(scd < 10)? strSecond = "0" + scd.toString():strSecond = scd.toString();
+			_duration = strMinute + ":" + strSecond;
+			durationText();
+		}
+		
+		private function durationText():void
+		{
+			durFormat = new TextFormat();
+			durFormat.font = "Verdana";
+			durFormat.size = 10;
+			durFormat.color = 0xFFFFFF;
+			
+			durText = new TextField();
+			durText.selectable = false;
+			durText.autoSize = "left";
+			durText.background = true;
+			durText.backgroundColor = 0x666666;
+			durText.defaultTextFormat = durFormat;
+			durText.text = _duration;
+			addChild(durText);
 		}
 		
 		private function onMouseEvent(e:MouseEvent):void 
@@ -125,7 +169,7 @@ package com.irzal.media.yt.thumbs
 			bg = null;
 		}
 		/**
-		 * Return Tloader id
+		 * Return YouTube video ID
 		 */
 		public function get thumbId():String
 		{

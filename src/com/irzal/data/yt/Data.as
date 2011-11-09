@@ -1,13 +1,30 @@
+/*
+    Copyright (C) 2011  Irzal Idris
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/> 
+	
+	http://irzal.com
+ */
 package com.irzal.data.yt 
 {
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	/**
-	 * Get Youtube user upload data, singleton class. User Data.getInstance() instead of new.
+	 * Get Youtube user upload data, singleton type class. Use Data.getInstance() instead of new.
 	 * @author dedet
 	 */
 	public class Data extends EventDispatcher
@@ -15,12 +32,16 @@ package com.irzal.data.yt
 		private static const FEED_UPLOADS:String 		= "uploads";
 		
 		public static const COMPLETE:String 			= "complete";
-		public static const MEDIA_ID:String				= "id";
+		
+		public static const VIDEO_ID:String				= "id";
+		public static const VIDEO_DURATION:String		= "duration";
+		public static const VIDEO_DATE:String			= "date";
 		public static const MEDIA_TITLE:String			= "title";
 		public static const MEDIA_DESCRIPTION:String 	= "description";
 		public static const MEDIA_THUMBNAIL:String		= "thumbnail";
 		
 		private static var instance:Data = null;
+		private var instantiated:Boolean;
 		
 		private var _dataArray:Array;
 		private var _youtubeUser:String;
@@ -56,7 +77,7 @@ package com.irzal.data.yt
 			Security.loadPolicyFile("http://www.youtube.com/crossdomain.xml"); 
 			Security.allowDomain("*");
 			
-			if (instance == null)
+			if (instance == null) 
 			{
 				instance = new Data(new NewDataBlocker());
 			}
@@ -138,11 +159,17 @@ package com.irzal.data.yt
 			while (i < entryLength)
 			{
 				var _id:String 				= userXML.ns::entry[i].nsMedia::group.nsYt::videoid;
+				var _duration:String		= userXML.ns::entry[i].nsMedia::group.nsYt::duration.@seconds;
+				var _date:String			= userXML.ns::entry[i].nsMedia::group.nsYt::uploaded;
 				var _title:String 			= userXML.ns::entry[i].nsMedia::group.nsMedia::title;
 				var _description:String 	= userXML.ns::entry[i].nsMedia::group.nsMedia::description;
 				var _thumbnail:String 		= userXML.ns::entry[i].nsMedia::group.nsMedia::thumbnail[0].@url;
-				_dataArray[""+feedType+""][i]	= { id:_id, title:_title, description:_description, thumbnail:_thumbnail };
+				_dataArray["" + feedType + ""][i]	= { 
+					id:_id, date:_date.slice(0, 10), duration:_duration, title:_title, description:_description, thumbnail:_thumbnail
+					};
 				//trace(_dataArray[""+feedType+""][i]["thumbnail"]);
+				//trace(_date.slice(0, 10));
+				//trace(_duration);
 				i++;
 			}
 			dispatchEvent(new Event(Data.COMPLETE));
@@ -154,7 +181,7 @@ package com.irzal.data.yt
 		 * @param	index
 		 * @return
 		 */
-		public function getData(media:String,index:int):String
+		public function getData(index:int, media:String):String
 		{
 			return _dataArray["" + Data.FEED_UPLOADS + ""][index]["" + media + ""];
 		}
@@ -169,4 +196,7 @@ package com.irzal.data.yt
 		}
 	}
 }
-internal class NewDataBlocker {}
+internal class NewDataBlocker 
+{
+	//do nothing
+}

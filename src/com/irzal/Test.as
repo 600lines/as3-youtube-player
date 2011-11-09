@@ -1,5 +1,7 @@
 package com.irzal 
 {
+	import com.irzal.data.yt.Data;
+	import com.irzal.media.yt.thumbs.Tloader;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -13,15 +15,36 @@ package com.irzal
 	 */
 	public class Test extends Sprite 
 	{
+		private var data:Data;
+		//private var thumb:Tloader;
+		private var tArray:Array = [];
 		public function Test() 
 		{
-			var email:String = "caaa.a@chrisaiv.us";
-			var emailRegExp:RegExp = /^([a-zA-Z0-9_.-]+)@([a-zA-Z0-9.-]+)\.([a-zA-Z]{1,3})$/i;
-			var catches:Object = emailRegExp.exec( email );
-			for( var j:String in catches ) {
-			trace( j + ": " + catches[j] );
+			data = Data.getInstance();
+			data.loadSetup();
+			data.addEventListener(Data.COMPLETE, onData);
+		}
+		
+		private function onData(e:Event):void 
+		{
+			var dataLength:int = data.getDataLength();
+			var i:int;
+			trace(dataLength);
+			while (i < dataLength) 
+			{
+				var id:String = data.getData(i, Data.VIDEO_ID);
+				var url:String = data.getData(i, Data.MEDIA_THUMBNAIL);
+				tArray[i] = new Tloader();
+				tArray[i].loadThumbs(id, url);
+				tArray[i].duration = data.getData(i, Data.VIDEO_DURATION);
+				if (i > 0)
+				{
+					tArray[i].x = tArray[i - 1].x + tArray[i - 1].width +5;
+				}
+				addChild(tArray[i]);
+				i += 1;
 			}
-			trace( "This e-mail's validity is: " + emailRegExp.test( email ) );
+			
 		}
 	}
 
