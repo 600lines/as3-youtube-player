@@ -20,6 +20,7 @@ package com.irzal.data.yt
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.ProgressEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
@@ -106,10 +107,19 @@ package com.irzal.data.yt
 		{
 			urLoader = new URLLoader();
 			_youtubeUser = value;
+			urLoader.addEventListener(ProgressEvent.PROGRESS, urLoaderProg);
+			urLoader.addEventListener(Event.COMPLETE, urLoaderComplete);
 			
+			//dynamic feed types
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + feedType + "?v=2"));
 			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
-			urLoader.addEventListener(Event.COMPLETE, urLoaderComplete);
+			
+			
+		}
+		
+		private function urLoaderProg(e:ProgressEvent):void 
+		{
+			trace("getting youtube data");
 		}
 		
 		/**
