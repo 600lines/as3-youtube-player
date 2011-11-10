@@ -31,11 +31,7 @@ package com.irzal.media.yt.thumbs
 	 * @author dedet
 	 */
 	public class Tcontainer extends Sprite 
-	{
-		//private var title:TextField;
-		//private var detail:TextField;
-		//private var tFormat:TextFormat;
-		
+	{		
 		private var container:Sprite;
 		private var _data:Data;
 		private var tArray:Array = [];
@@ -90,6 +86,7 @@ package com.irzal.media.yt.thumbs
 		{
 			var child:Object = e.target;
 			var parent:Object = e.currentTarget;
+			
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
@@ -100,8 +97,7 @@ package com.irzal.media.yt.thumbs
 					trace(child.thumbId);
 					trace(parent.getChildIndex(child));
 					DisplayObject
-					detail.title = _data.getData(parent.getChildIndex(child) , Data.MEDIA_TITLE);
-					detail.description = _data.getData(parent.getChildIndex(child), Data.MEDIA_DESCRIPTION);
+					detail.description(_data.getData(parent.getChildIndex(child) , Data.MEDIA_TITLE),_data.getData(parent.getChildIndex(child), Data.MEDIA_DESCRIPTION));
 				break;
 				case MouseEvent.MOUSE_OUT:
 					//dispatchEvent(new Event(Tevent.OUT));

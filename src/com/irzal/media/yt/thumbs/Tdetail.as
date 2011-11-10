@@ -22,6 +22,7 @@ package com.irzal.media.yt.thumbs
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFieldType;
+	import flash.text.AntiAliasType;
 	
 	/**
 	 * ...
@@ -29,6 +30,7 @@ package com.irzal.media.yt.thumbs
 	 */
 	internal class Tdetail extends Sprite 
 	{
+		private static var instance:Tdetail;
 		private var tField:TextField;
 		private var tFormat:TextFormat
 		
@@ -36,35 +38,36 @@ package com.irzal.media.yt.thumbs
 		{
 			formatText();
 		}
-		private function formatText():void
+		public function formatText():void
 		{
 			tFormat 					= new TextFormat();
 			tFormat.color 				= 0xFFFFFF;
-			tFormat.font				= "Verdana";
-			tFormat.size 				= 10;
+			tFormat.font				= "MS Sans Serif";
+			tFormat.size 				= 5;
 			
 			tField 						= new TextField();
-			//tField.type					= TextFieldType.INPUT;
 			tField.background			= true;
 			tField.backgroundColor		= 0x666666;
 			tField.multiline 			= true;
 			tField.mouseWheelEnabled 	= true;
 			tField.width				= 370;
+			tField.height				= 100;
 			tField.wordWrap				= true;
 			tField.defaultTextFormat	= tFormat;
 			
 			addChild(tField);
 		}
 		
-		public function set title(str:String):void
+		public function description(title:String,longDescription:String):void
 		{
-			tField.htmlText = "<b>"+str+"</b>\n";
+			//tField.setTextFormat(tFormat);
+			tField.htmlText = "<b>" + title + "</b>\n";
+			tField.htmlText += longDescription;
 		}
 		
-		public function set description(str:String):void
+		public function getTextHeight():int
 		{
-			tField.htmlText += str;
+			return tField.textHeight;
 		}
 	}
-
 }

@@ -25,6 +25,7 @@ package com.irzal.media.yt
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
 	import flash.system.Security;
+	import flash.filters.BlurFilter;
 	/**
 	 * ...
 	 * @author dedet
@@ -35,10 +36,13 @@ package com.irzal.media.yt
 		private var pLoader:Loader;
 		private var chromeless:Boolean;
 		
+		private var blur:BlurFilter = new BlurFilter(15,15,2);
+		
 		public function VideoPlayer() 
 		{
 			Security.allowDomain("*");
-			
+			//this.mouseChildren = false;
+			//this.filters = [blur];
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -51,8 +55,13 @@ package com.irzal.media.yt
 			pLoader = new Loader();
 			pLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			pLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loadProgress);
+			
+			
+			//for chromless player
 			//pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
-			pLoader.load(new URLRequest("http://www.youtube.com/v/VIDEO_ID?version=3"));
+			
+			//default youtube play bar
+			pLoader.load(new URLRequest("http://www.youtube.com/v/Lo9kGHYn_bI?version=3"));
 		}
 		
 		private function loadComplete(e:Event):void 
@@ -66,9 +75,10 @@ package com.irzal.media.yt
 		
 		private function onPlayerReady(e:Event):void 
 		{
-			trace("player ready");
-			stage.addEventListener(MouseEvent.CLICK, stageClick);
+			dispatchEvent(new Event("playerReady"));
+			//stage.addEventListener(MouseEvent.CLICK, stageClick);
 			player = pLoader.content;
+			player.destroy();
 		}
 		
 		private function stageClick(e:MouseEvent):void 
@@ -88,7 +98,17 @@ package com.irzal.media.yt
 		{
 			
 		}
+		public function disable():void
+		{
+			this.mouseChildren = false;
+			this.filters = [blur];
+		}
 		
+		public function enable():void
+		{
+			this.mouseChildren = true;
+			this.filters = null;
+		}
 	}
 
 }
