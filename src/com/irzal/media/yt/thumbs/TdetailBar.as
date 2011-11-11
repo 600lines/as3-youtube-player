@@ -9,7 +9,7 @@ package com.irzal.media.yt.thumbs
 	 * ...
 	 * @author dedet
 	 */
-	public class TdetailBar extends Sprite
+	internal class TdetailBar extends Sprite
 	{
 		private var bar:Sprite;
 		
@@ -24,42 +24,38 @@ package com.irzal.media.yt.thumbs
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			//---
 			bg();
-			guide();
 			createBar();
-			//bar.scaleY = 1.2;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseEvent);
-			//stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseEvent);
+			bar.addEventListener(MouseEvent.MOUSE_DOWN, onMouseEventBar);
 		}
 		
 		private function bg():void 
 		{
-			graphics.beginFill(0x666666, 1);
-			graphics.drawRect(0, 0, 9, 100);
+			graphics.beginFill(0xCCCCCC, 1);
+			graphics.drawRect(0, 0, 7, 100);
 			graphics.endFill();
 		}
 		
-		private function onMouseEvent(e:MouseEvent):void 
+		private function onMouseEventBar(e:MouseEvent):void 
 		{
-			barScaleY = 5;
 			var child:Object 	= e.target;
 			var parent:Object 	= e.currentTarget;
-			var rect:Rectangle = new Rectangle(7, (bar.height * 0.5), 0, 93);
+			var rect:Rectangle = new Rectangle(0, 0, 0, (100-Math.round(bar.height)));
 			
-			
-			trace(bar.height);
-			bar.y = 35;
-			trace(bar.height);
-			trace(bar.y);
 			switch(e.type)
 			{
 				case MouseEvent.MOUSE_DOWN:
-					addEventListener(MouseEvent.MOUSE_MOVE, onMouseEvent);
+					bar.addEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
+					stage.addEventListener(MouseEvent.MOUSE_UP, onMouseEventBar);
 				break;
 				case MouseEvent.MOUSE_MOVE:
-					//child.startDrag(false, rect);
-					trace(bar.y);
-					trace("lalala");
+					bar.startDrag(false, rect);
+					dispatchEvent(new Event(Tevent.MOVE));
 					e.updateAfterEvent();
+				break;
+				case MouseEvent.MOUSE_UP:
+					bar.stopDrag()
+					stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseEventBar);
+					bar.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
 				break;
 			}
 		}
@@ -68,24 +64,20 @@ package com.irzal.media.yt.thumbs
 		{
 			bar = new Sprite();
 			bar.buttonMode = true;
-			bar.graphics.beginFill(0x000000, 1);
-			bar.graphics.drawRect( -7, -7, 7, 7);
+			bar.graphics.beginFill(0xFFFFFF, 1);
+			bar.graphics.drawRect( 0, 0, 7, 7);
 			bar.graphics.endFill();
-			bar.y = 7;
-			bar.x = 7;
 			addChild(bar);
 		}
 		
-		private function guide():void
-		{
-			graphics.beginFill(0x000000,1);
-			graphics.drawRect(3, 0, 1, 100);
-			graphics.endFill();
-		}
-		
-		public function get barHeight():int
+		public function get barHeightReset():Number
 		{
 			bar.height = 7;
+			return bar.height;
+		}
+		
+		public function get barHeightScaled():Number
+		{
 			return bar.height;
 		}
 		
@@ -93,6 +85,13 @@ package com.irzal.media.yt.thumbs
 		{
 			bar.scaleY = scale;
 		}
+		public function get barY():Number
+		{
+			return bar.y;
+		}
+		public function set barY(y:Number):void
+		{
+			bar.y = y;
+		}
 	}
-
 }

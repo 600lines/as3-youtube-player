@@ -30,8 +30,7 @@ package com.irzal.media.yt.thumbs
 	 */
 	internal class Tdetail extends Sprite 
 	{
-		private static var instance:Tdetail;
-		private var tField:TextField;
+		public var tField:TextField;
 		private var tFormat:TextFormat
 		
 		public function Tdetail()
@@ -56,18 +55,32 @@ package com.irzal.media.yt.thumbs
 			tField.defaultTextFormat	= tFormat;
 			
 			addChild(tField);
+			
+			//explenation text
+			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
+			tField.htmlText +="\nClick the thumbnail to play video"
 		}
 		
 		public function description(title:String,longDescription:String):void
 		{
 			//tField.setTextFormat(tFormat);
-			tField.htmlText = "<b>" + title + "</b>\n";
-			tField.htmlText += longDescription;
+			tField.htmlText = "<b>" + title + "</b>\n\r";
+			tField.htmlText += longDescription.split("\r").join("");
 		}
 		
-		public function getTextHeight():int
+		public function getTextHeight():Number
 		{
 			return tField.textHeight;
+		}
+		
+		public function set scrollText(v:int):void
+		{
+			tField.scrollV = v;
+		}
+		
+		public function get textMaxScroll():int
+		{
+			return tField.maxScrollV+7;
 		}
 	}
 }

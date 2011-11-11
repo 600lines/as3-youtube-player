@@ -113,8 +113,6 @@ package com.irzal.data.yt
 			//dynamic feed types
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + feedType + "?v=2"));
 			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
-			
-			
 		}
 		
 		private function urLoaderProg(e:ProgressEvent):void 
