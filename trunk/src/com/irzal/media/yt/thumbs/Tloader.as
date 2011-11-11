@@ -113,8 +113,8 @@ package com.irzal.media.yt.thumbs
 		private function durationText():void
 		{
 			durFormat = new TextFormat();
-			durFormat.font = "Courier New";
-			durFormat.size = 11;
+			durFormat.font = "Verdana";
+			durFormat.size = 10;
 			durFormat.color = 0xFFFFFF;
 			
 			durText = new TextField();

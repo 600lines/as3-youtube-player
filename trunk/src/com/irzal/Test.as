@@ -27,8 +27,8 @@ package com.irzal
 		{
 			data = Data.getInstance();
 			data.loadSetup();
-			//data.addEventListener(Data.COMPLETE, onData);
-			//container = new Tcontainer();
+			data.addEventListener(Data.COMPLETE, onData);
+			container = new Tcontainer();
 			//container.mouseEnabled = false;
 			vidPlayer = new VideoPlayer();
 			vidPlayer.addEventListener("playerReady", vidReady);
@@ -45,6 +45,7 @@ package com.irzal
 		private function onData(e:Event):void 
 		{
 			addChild(container);
+			container.y = 10;
 			container.setThumbnails();
 			container.addEventListener(Tevent.CLICK, onContainer);
 		}

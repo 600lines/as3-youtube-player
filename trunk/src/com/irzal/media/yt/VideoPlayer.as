@@ -61,7 +61,7 @@ package com.irzal.media.yt
 			//pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
 			
 			//default youtube play bar
-			pLoader.load(new URLRequest("http://www.youtube.com/v/Lo9kGHYn_bI?version=3"));
+			pLoader.load(new URLRequest("http://www.youtube.com/v/6dM9rDTGs8c?version=3"));
 		}
 		
 		private function loadComplete(e:Event):void 
