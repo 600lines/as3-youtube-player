@@ -38,9 +38,16 @@ package com.irzal.media.yt.thumbs
 		private var tArray:Array = [];
 		private var detail:Tdetail;
 		private var scrollBar:TdetailBar;
+		private var vidBar:TdetailBar;
 		
 		private var scrollUpper:Number;
 		private var scrollLower:Number;
+		
+		private var vidScrollUpper:int;
+		private var vidScrollLower:int;
+		private var vidObjectUpper:int;
+		private var vidObjectLower:int;
+		private var vidObjectRange:int;
 		
 		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
 		
@@ -60,12 +67,14 @@ package com.irzal.media.yt.thumbs
 			
 			detail 		= new Tdetail();
 			scrollBar 	= new TdetailBar();
+			vidBar 		= new TdetailBar();
 		}
 		
 		public function setThumbnails():void
 		{
 			var dataLength:int = _data.getDataLength();
 			var i:int;
+			
 			while (i < dataLength) 
 			{
 				var id:String 	= _data.getData(i, Data.VIDEO_ID);
@@ -81,16 +90,31 @@ package com.irzal.media.yt.thumbs
 				container.addEventListener(MouseEvent.CLICK, onMouseEvent);
 				container.addEventListener(MouseEvent.MOUSE_OVER, onMouseEvent);
 				container.addEventListener(MouseEvent.MOUSE_OUT, onMouseEvent);
-				container.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);
+				//container.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);
 				container.addChild(tArray[i]);
 				i += 1;
 			}
-			detail.y 	= container.y + container.height + 5;
-			detail.x 	= 150;
+			
+			vidBar.y = container.y + container.height + 15;
+			vidBar.rotation = -90;
+			vidBar.x = 150;
+			//vidBar.visible = false;
+			
+			if (vidBar.visible == false)
+			{
+				detail.y 	= container.y + container.height + 10;
+			} else
+			{
+				detail.y 	= vidBar.y + vidBar.height + 5;
+			}
+			
 			scrollBar.x = detail.x + detail.width - scrollBar.width;
 			scrollBar.y = detail.y;
+			
+			addChild(vidBar);
 			addChild(detail);
 			addChild(scrollBar);
+			
 			scrollBar.visible = false;
 			scrollBar.addEventListener(Tevent.MOVE, onTevent);
 		}
@@ -151,6 +175,28 @@ package com.irzal.media.yt.thumbs
 			var moveDrag:Number 	= scrollBar.barY - scrollUpper;
 			var procentDrag:Number 	= moveDrag / scrollLower;
 			detail.scrollText		= procentDrag * detail.textMaxScroll;
+		}
+		
+		private function checkObjectDragHeight():void
+		{
+			var percObjectHeight:Number = vidBar.width/container.width;
+			var percSliderHeight:Number = vidBar.height/_sliderBar._slider.height;
+			
+			if(percObjectHeight>=1)
+			{ 
+				vidBar.visible=false;
+			} else
+			{
+				vidBar.visible=true;
+				_sliderBar._slider.scaleY = percObjectHeight * percSliderHeight;
+			}
+			scrollUpper = _sliderBar._path.y + (_sliderBar._slider.height*0.5);
+			scrollLower = _sliderBar._path.height - _sliderBar._slider.height;
+			_sliderBar._slider.y = scrollUpper;
+			
+			objectUpper = dragObject.y;
+			objectLower = dragObject.y + (_sliderBar._path.height - dragObject.height);
+			objectRange = objectUpper-objectLower;
 		}
 	}
 

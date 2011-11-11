@@ -12,6 +12,7 @@ package com.irzal
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	import com.irzal.media.yt.thumbs.Tevent;
+	import flash.display.StageScaleMode;
 	/**
 	 * ...
 	 * @author dedet
@@ -34,6 +35,8 @@ package com.irzal
 			vidPlayer.addEventListener("playerReady", vidReady);
 			addChild(vidPlayer);
 			
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
 		}
 		
 		private function vidReady(e:Event):void 
@@ -46,6 +49,7 @@ package com.irzal
 		{
 			addChild(container);
 			container.y = 10;
+			container.x = 5;
 			container.setThumbnails();
 			container.addEventListener(Tevent.CLICK, onContainer);
 		}
