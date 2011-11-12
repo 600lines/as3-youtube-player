@@ -21,6 +21,7 @@ package com.irzal.media.yt.thumbs
 	import com.irzal.data.yt.Data;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TouchEvent;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -50,6 +51,9 @@ package com.irzal.media.yt.thumbs
 		private var vidObjectRange:int;
 		
 		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
+		private var objectUpper:Number;
+		private var objectLower:Number;
+		private var objectRange:Number;
 		
 		public function Tcontainer() 
 		{
@@ -96,9 +100,12 @@ package com.irzal.media.yt.thumbs
 			}
 			
 			vidBar.y = container.y + container.height + 15;
-			vidBar.rotation = -90;
 			vidBar.x = 150;
+			addChild(vidBar);
 			//vidBar.visible = false;
+			//vidBar.scaleY = 3;
+			checkObjectDragHeight();
+			//vidBar.rotation = -90;
 			
 			if (vidBar.visible == false)
 			{
@@ -111,12 +118,19 @@ package com.irzal.media.yt.thumbs
 			scrollBar.x = detail.x + detail.width - scrollBar.width;
 			scrollBar.y = detail.y;
 			
-			addChild(vidBar);
 			addChild(detail);
 			addChild(scrollBar);
 			
 			scrollBar.visible = false;
 			scrollBar.addEventListener(Tevent.MOVE, onTevent);
+			
+			vidBar.addEventListener(Tevent.MOVE, onVidTevent);
+			//
+		}
+		
+		private function onVidTevent(e:Event):void 
+		{
+			objectY();
 		}
 		
 		private function onTevent(e:Event):void 
@@ -179,8 +193,8 @@ package com.irzal.media.yt.thumbs
 		
 		private function checkObjectDragHeight():void
 		{
-			var percObjectHeight:Number = vidBar.width/container.width;
-			var percSliderHeight:Number = vidBar.height/_sliderBar._slider.height;
+			var percObjectHeight:Number = vidBar.height/container.width;
+			var percSliderHeight:Number = vidBar.height / vidBar.barHeightReset;
 			
 			if(percObjectHeight>=1)
 			{ 
@@ -188,15 +202,27 @@ package com.irzal.media.yt.thumbs
 			} else
 			{
 				vidBar.visible=true;
-				_sliderBar._slider.scaleY = percObjectHeight * percSliderHeight;
+				vidBar.barScaleY = percObjectHeight * percSliderHeight;
 			}
-			scrollUpper = _sliderBar._path.y + (_sliderBar._slider.height*0.5);
-			scrollLower = _sliderBar._path.height - _sliderBar._slider.height;
-			_sliderBar._slider.y = scrollUpper;
+			scrollUpper = 0;
+			scrollLower = 100 - vidBar.barHeightScaled;
+			trace(scrollLower);
+			vidBar.barY = scrollUpper;
 			
-			objectUpper = dragObject.y;
-			objectLower = dragObject.y + (_sliderBar._path.height - dragObject.height);
-			objectRange = objectUpper-objectLower;
+			objectUpper = container.x;
+			objectLower = container.x + (100 - container.width);
+			objectRange = objectUpper - objectLower;
+			trace(container.x,objectLower);
+		}
+		
+		private function objectY():void
+		{
+			var moveDrag:Number 	= vidBar.barY - scrollUpper;
+			var procentDrag:Number 	= moveDrag/scrollLower;
+			var objectMove:Number 	= procentDrag * objectRange;
+			
+			container.x = objectUpper - objectMove;
+			trace(container.x);
 		}
 	}
 

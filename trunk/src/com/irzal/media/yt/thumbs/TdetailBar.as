@@ -44,7 +44,7 @@ package com.irzal.media.yt.thumbs
 			switch(e.type)
 			{
 				case MouseEvent.MOUSE_DOWN:
-					bar.addEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
+					stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
 					stage.addEventListener(MouseEvent.MOUSE_UP, onMouseEventBar);
 				break;
 				case MouseEvent.MOUSE_MOVE:
@@ -55,7 +55,7 @@ package com.irzal.media.yt.thumbs
 				case MouseEvent.MOUSE_UP:
 					bar.stopDrag()
 					stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseEventBar);
-					bar.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
+					stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseEventBar);
 				break;
 			}
 		}
