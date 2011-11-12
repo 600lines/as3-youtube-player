@@ -9,11 +9,11 @@ package com.irzal.media.yt.thumbs
 	 * ...
 	 * @author dedet
 	 */
-	internal class TdetailBar extends Sprite
+	internal class TvideoBar extends Sprite
 	{
 		private var bar:Sprite;
 		
-		public function TdetailBar() 
+		public function TvideoBar() 
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
@@ -31,7 +31,7 @@ package com.irzal.media.yt.thumbs
 		private function bg():void 
 		{
 			graphics.beginFill(0x888888, 1);
-			graphics.drawRect(0, 0, 7, 100);
+			graphics.drawRect(0, 0, 10, 200);
 			graphics.endFill();
 		}
 		
@@ -39,7 +39,7 @@ package com.irzal.media.yt.thumbs
 		{
 			var child:Object 	= e.target;
 			var parent:Object 	= e.currentTarget;
-			var rect:Rectangle = new Rectangle(0, 0, 0, (this.height - Math.round(bar.height)));
+			var rect:Rectangle = new Rectangle(0, 0, 0, (200-Math.round(bar.height)));
 			
 			switch(e.type)
 			{
@@ -65,14 +65,14 @@ package com.irzal.media.yt.thumbs
 			bar = new Sprite();
 			bar.buttonMode = true;
 			bar.graphics.beginFill(0xFFFFFF, 1);
-			bar.graphics.drawRect( 0, 0, 7, 7);
+			bar.graphics.drawRect( 0, 0, 10, 10);
 			bar.graphics.endFill();
 			addChild(bar);
 		}
 		
 		public function get barHeightReset():Number
 		{
-			bar.height = 7;
+			bar.height = 10;
 			return bar.height;
 		}
 		

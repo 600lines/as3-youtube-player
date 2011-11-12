@@ -45,8 +45,8 @@ package com.irzal.media.yt.thumbs
 			tFormat.size 				= 5;
 			
 			tField 						= new TextField();
-			tField.background			= true;
-			tField.backgroundColor		= 0x666666;
+			//tField.background			= true;
+			//tField.backgroundColor		= 0x666666;
 			tField.multiline 			= true;
 			tField.mouseWheelEnabled 	= true;
 			tField.width				= 370;
@@ -58,7 +58,8 @@ package com.irzal.media.yt.thumbs
 			
 			//explenation text
 			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
-			tField.htmlText +="\nClick the thumbnail to play video"
+			tField.htmlText += "\nClick the thumbnail to play video"
+			bg();
 		}
 		
 		public function description(title:String,longDescription:String):void
@@ -81,6 +82,12 @@ package com.irzal.media.yt.thumbs
 		public function get textMaxScroll():int
 		{
 			return tField.maxScrollV+7;
+		}
+		private function bg():void
+		{
+			graphics.beginFill(0x666666, 0.5);
+			graphics.drawRect(0,0,this.width,this.height);
+			graphics.endFill();
 		}
 	}
 }
