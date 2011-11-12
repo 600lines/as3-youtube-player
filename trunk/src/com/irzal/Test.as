@@ -7,6 +7,7 @@ package com.irzal
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TouchEvent;
 	import flash.filters.BlurFilter;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -30,6 +31,7 @@ package com.irzal
 			data.loadSetup();
 			data.addEventListener(Data.COMPLETE, onData);
 			container = new Tcontainer();
+			container.addEventListener(Tevent.CLICK , onContainerClick);
 			//container.mouseEnabled = false;
 			vidPlayer = new VideoPlayer();
 			vidPlayer.addEventListener("playerReady", vidReady);
@@ -37,6 +39,13 @@ package com.irzal
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
+		}
+		
+		private function onContainerClick(e:Event):void 
+		{
+			vidPlayer.playVideo(container.vidId);
+			container.visible = false;
+			vidPlayer.enable();
 		}
 		
 		private function vidReady(e:Event):void 
@@ -49,7 +58,7 @@ package com.irzal
 		{
 			addChild(container);
 			container.y = 10;
-			container.x = 5;
+			//container.x = 5;
 			container.setThumbnails();
 			container.addEventListener(Tevent.CLICK, onContainer);
 		}

@@ -81,7 +81,7 @@ package com.irzal.media.yt
 			player.destroy();
 		}
 		
-		private function stageClick(e:MouseEvent):void 
+		public function playVideo(id:String):void 
 		{
 			try 
 			{
@@ -91,7 +91,8 @@ package com.irzal.media.yt
 			{
 				trace(err.errorID,err.message);
 			}
-			player.loadVideoById("U0hJwl-PDL8", 0, "default");
+			player.loadVideoById(id, 0, "default");
+			trace(id);
 		}
 		
 		private function loadProgress(e:ProgressEvent):void 

@@ -39,21 +39,20 @@ package com.irzal.media.yt.thumbs
 		private var tArray:Array = [];
 		private var detail:Tdetail;
 		private var scrollBar:TdetailBar;
-		private var vidBar:TdetailBar;
+		private var vidBar:TvideoBar;
 		
 		private var scrollUpper:Number;
 		private var scrollLower:Number;
-		
-		private var vidScrollUpper:int;
-		private var vidScrollLower:int;
-		private var vidObjectUpper:int;
-		private var vidObjectLower:int;
-		private var vidObjectRange:int;
 		
 		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
 		private var objectUpper:Number;
 		private var objectLower:Number;
 		private var objectRange:Number;
+		private var scrollLowerVid:Number;
+		private var scrollUpperVid:Number;
+		
+		private var _vidId:String;
+		private var vidIndex:int;
 		
 		public function Tcontainer() 
 		{
@@ -71,7 +70,7 @@ package com.irzal.media.yt.thumbs
 			
 			detail 		= new Tdetail();
 			scrollBar 	= new TdetailBar();
-			vidBar 		= new TdetailBar();
+			vidBar 		= new TvideoBar();
 		}
 		
 		public function setThumbnails():void
@@ -100,12 +99,13 @@ package com.irzal.media.yt.thumbs
 			}
 			
 			vidBar.y = container.y + container.height + 15;
-			vidBar.x = 150;
+			vidBar.x = 230;
 			addChild(vidBar);
 			//vidBar.visible = false;
-			//vidBar.scaleY = 3;
+			//vidBar.scaleY = 2;
+			//vidBar.scaleX = 1.2;
 			checkObjectDragHeight();
-			//vidBar.rotation = -90;
+			vidBar.rotation = -90;
 			
 			if (vidBar.visible == false)
 			{
@@ -148,6 +148,7 @@ package com.irzal.media.yt.thumbs
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
+					_vidId = _data.getData(parent.getChildIndex(child), Data.VIDEO_ID);
 					dispatchEvent(new Event(Tevent.CLICK));
 				break;
 				case MouseEvent.MOUSE_OVER:
@@ -204,25 +205,28 @@ package com.irzal.media.yt.thumbs
 				vidBar.visible=true;
 				vidBar.barScaleY = percObjectHeight * percSliderHeight;
 			}
-			scrollUpper = 0;
-			scrollLower = 100 - vidBar.barHeightScaled;
-			trace(scrollLower);
-			vidBar.barY = scrollUpper;
+			scrollUpperVid = 0;
+			scrollLowerVid = vidBar.height - vidBar.barHeightScaled;
+			
+			vidBar.barY = scrollUpperVid;
 			
 			objectUpper = container.x;
-			objectLower = container.x + (100 - container.width);
+			objectLower = container.x + ((stage.stageWidth - this.x) - (container.width+this.x));
 			objectRange = objectUpper - objectLower;
-			trace(container.x,objectLower);
 		}
 		
 		private function objectY():void
 		{
-			var moveDrag:Number 	= vidBar.barY - scrollUpper;
-			var procentDrag:Number 	= moveDrag/scrollLower;
+			var moveDrag:Number 	= vidBar.barY - scrollUpperVid;
+			var procentDrag:Number 	= moveDrag / scrollLowerVid;
 			var objectMove:Number 	= procentDrag * objectRange;
 			
 			container.x = objectUpper - objectMove;
-			trace(container.x);
+		}
+		
+		public function get vidId():String 
+		{
+			return _vidId;
 		}
 	}
 
