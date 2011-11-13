@@ -16,7 +16,7 @@
 	
 	http://irzal.com
  */
-package com.irzal.data.yt 
+package com.irzal.yt.data 
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

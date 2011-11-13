@@ -1,4 +1,4 @@
-package com.irzal.media.yt.thumbs 
+package com.irzal.yt.media.thumbs 
 {
 	import flash.display.Sprite;
 	import flash.events.Event;

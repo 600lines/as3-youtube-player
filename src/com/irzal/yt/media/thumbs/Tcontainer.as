@@ -16,7 +16,7 @@
 	
 	http://irzal.com
  */
-package com.irzal.media.yt.thumbs 
+package com.irzal.yt.media.thumbs 
 {
 	import com.irzal.data.yt.Data;
 	import flash.display.Sprite;
