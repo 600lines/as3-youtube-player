@@ -21,8 +21,6 @@ package com.irzal.yt.media.thumbs
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-	import flash.text.TextFieldType;
-	import flash.text.AntiAliasType;
 	
 	/**
 	 * ...
@@ -33,11 +31,15 @@ package com.irzal.yt.media.thumbs
 		public var tField:TextField;
 		private var tFormat:TextFormat
 		
+		/**
+		 * 
+		 */
 		public function Tdetail()
 		{
 			formatText();
 		}
-		public function formatText():void
+		
+		private function formatText():void
 		{
 			tFormat 					= new TextFormat();
 			tFormat.color 				= 0xFFFFFF;
@@ -59,9 +61,14 @@ package com.irzal.yt.media.thumbs
 			//explenation text
 			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
 			tField.htmlText += "\nClick the thumbnail to play video"
-			bg();
+			//bg();
 		}
 		
+		/**
+		 * 
+		 * @param	title
+		 * @param	longDescription
+		 */
 		public function description(title:String,longDescription:String):void
 		{
 			//tField.setTextFormat(tFormat);
@@ -69,25 +76,28 @@ package com.irzal.yt.media.thumbs
 			tField.htmlText += longDescription.split("\r").join("");
 		}
 		
+		/**
+		 * 
+		 * @return
+		 */
 		public function getTextHeight():Number
 		{
 			return tField.textHeight;
 		}
 		
+		/**
+		 * 
+		 */
 		public function set scrollText(v:int):void
 		{
 			tField.scrollV = v;
 		}
-		
+		/**
+		 * 
+		 */
 		public function get textMaxScroll():int
 		{
 			return tField.maxScrollV+7;
-		}
-		private function bg():void
-		{
-			graphics.beginFill(0x666666, 0.5);
-			graphics.drawRect(0,0,this.width,this.height);
-			graphics.endFill();
 		}
 	}
 }

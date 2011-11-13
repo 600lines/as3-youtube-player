@@ -97,6 +97,9 @@ package com.irzal.yt.media.thumbs
 			
 		}
 		
+		/**
+		 * 
+		 */
 		public function set duration(dur:String):void
 		{
 			var _dur:int = Number(dur);
@@ -145,6 +148,7 @@ package com.irzal.yt.media.thumbs
 			progBar = null;
 			bg = null;
 		}
+		
 		/**
 		 * Return YouTube video ID
 		 */

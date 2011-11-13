@@ -14,6 +14,9 @@ package com.irzal.yt.media.thumbs
 	{
 		private var bar:Sprite;
 		
+		/**
+		 * 
+		 */
 		public function TvideoBar() 
 		{
 			if (stage) init();
@@ -71,25 +74,42 @@ package com.irzal.yt.media.thumbs
 			addChild(bar);
 		}
 		
+		/**
+		 * 
+		 */
 		public function get barHeightReset():Number
 		{
 			bar.height = 10;
 			return bar.height;
 		}
 		
+		/**
+		 * 
+		 */
 		public function get barHeightScaled():Number
 		{
 			return bar.height;
 		}
 		
+		/**
+		 * 
+		 */
 		public function  set barScaleY(scale:Number):void
 		{
 			bar.scaleY = scale;
 		}
+		
+		/**
+		 * 
+		 */
 		public function get barY():Number
 		{
 			return bar.y;
 		}
+		
+		/**
+		 * 
+		 */
 		public function set barY(y:Number):void
 		{
 			bar.y = y;

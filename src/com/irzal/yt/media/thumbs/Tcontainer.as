@@ -21,6 +21,7 @@ package com.irzal.yt.media.thumbs
 	import com.irzal.yt.data.Data;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TextEvent;
 	import flash.events.TouchEvent;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
@@ -41,20 +42,24 @@ package com.irzal.yt.media.thumbs
 		private var detail:Tdetail;
 		private var scrollBar:TdetailBar;
 		private var vidBar:TvideoBar;
+		private var thumbMask:Sprite;
 		
 		private var scrollUpper:Number;
 		private var scrollLower:Number;
 		
-		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
 		private var objectUpper:Number;
 		private var objectLower:Number;
 		private var objectRange:Number;
 		private var scrollLowerVid:Number;
 		private var scrollUpperVid:Number;
 		
-		private var _vidId:String;
+		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
+		
 		private var vidIndex:int;
 		
+		/**
+		 * 
+		 */
 		public function Tcontainer() 
 		{
 			if (stage) init();
@@ -74,6 +79,9 @@ package com.irzal.yt.media.thumbs
 			vidBar 		= new TvideoBar();
 		}
 		
+		/**
+		 * 
+		 */
 		public function setThumbnails():void
 		{
 			var dataLength:int = _data.getDataLength();
@@ -89,7 +97,7 @@ package com.irzal.yt.media.thumbs
 				tArray[i].duration = _data.getData(i, Data.VIDEO_DURATION);
 				if (i > 0)
 				{
-					tArray[i].x = tArray[i - 1].x + tArray[i - 1].width +5;
+					tArray[i].x = tArray[i - 1].x + tArray[i - 1].width +8;
 				}
 				container.addEventListener(MouseEvent.CLICK, onMouseEvent);
 				container.addEventListener(MouseEvent.MOUSE_OVER, onMouseEvent);
@@ -100,14 +108,12 @@ package com.irzal.yt.media.thumbs
 			}
 			
 			vidBar.y = container.y + container.height + 15;
-			vidBar.x = 230;
+			vidBar.x = 100;
 			addChild(vidBar);
-			//vidBar.visible = false;
-			//vidBar.scaleY = 2;
-			//vidBar.scaleX = 1.2;
 			checkObjectDragHeight();
 			vidBar.rotation = -90;
 			
+			//chek vidBar visible
 			if (vidBar.visible == false)
 			{
 				detail.y 	= container.y + container.height + 10;
@@ -126,7 +132,11 @@ package com.irzal.yt.media.thumbs
 			scrollBar.addEventListener(Tevent.MOVE, onTevent);
 			
 			vidBar.addEventListener(Tevent.MOVE, onVidTevent);
-			//
+			
+			createMask();
+			this.mask = thumbMask;
+			
+			createBg();
 		}
 		
 		private function onVidTevent(e:Event):void 
@@ -149,8 +159,8 @@ package com.irzal.yt.media.thumbs
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
-					_vidId = _data.getData(parent.getChildIndex(child), Data.VIDEO_ID);
-					dispatchEvent(new Event(Tevent.CLICK));
+					var vidId:String = _data.getData(parent.getChildIndex(child), Data.VIDEO_ID);
+					dispatchEvent(new Tevent(Tevent.CLICK, vidId));
 				break;
 				case MouseEvent.MOUSE_OVER:
 					//dispatchEvent(new Event(Tevent.OVER));
@@ -212,7 +222,7 @@ package com.irzal.yt.media.thumbs
 			vidBar.barY = scrollUpperVid;
 			
 			objectUpper = container.x;
-			objectLower = container.x + ((stage.stageWidth - this.x) - (container.width+this.x));
+			objectLower = container.x + (373 - (container.width));
 			objectRange = objectUpper - objectLower;
 		}
 		
@@ -225,9 +235,18 @@ package com.irzal.yt.media.thumbs
 			container.x = objectUpper - objectMove;
 		}
 		
-		public function get vidId():String 
+		private function createMask():void
 		{
-			return _vidId;
+			thumbMask = new Sprite();
+			thumbMask.graphics.beginFill(0xFFFFFF);
+			thumbMask.graphics.drawRect(this.x, this.y, 380, 230);
+			thumbMask.graphics.endFill();
+		}
+		private function createBg():void
+		{
+			graphics.beginFill(0x666666, 0.5);
+			graphics.drawRect(0, 0, 380, 250);
+			graphics.endFill();
 		}
 	}
 
