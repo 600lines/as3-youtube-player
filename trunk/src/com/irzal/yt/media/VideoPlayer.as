@@ -113,6 +113,7 @@ package com.irzal.yt.media
 			player = pLoader.content;
 			player.destroy();
 			dispatchEvent(new Tevent(Tevent.READY));
+			addEventListener(MouseEvent.MOUSE_OVER
 		}
 		
 		/**
@@ -135,7 +136,7 @@ package com.irzal.yt.media
 		
 		private function loadProgress(e:ProgressEvent):void 
 		{
-			
+			//put progress here
 		}
 		
 		/**

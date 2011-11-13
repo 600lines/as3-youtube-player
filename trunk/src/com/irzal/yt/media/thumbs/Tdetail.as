@@ -18,7 +18,9 @@
  */
 package com.irzal.yt.media.thumbs 
 {
+	import com.irzal.yt.events.Tevent;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -32,7 +34,7 @@ package com.irzal.yt.media.thumbs
 		private var tFormat:TextFormat
 		
 		/**
-		 * 
+		 * Constractor
 		 */
 		public function Tdetail()
 		{
@@ -58,10 +60,15 @@ package com.irzal.yt.media.thumbs
 			
 			addChild(tField);
 			
+			tField.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseEvent);
 			//explenation text
 			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
 			tField.htmlText += "\nClick the thumbnail to play video"
-			//bg();
+		}
+		
+		private function onMouseEvent(e:MouseEvent):void 
+		{
+			dispatchEvent(new Tevent(Tevent.WHEEL));
 		}
 		
 		/**
@@ -77,8 +84,8 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
-		 * @return
+		 * Get text height
+		 * @return tField.textHeight
 		 */
 		public function getTextHeight():Number
 		{
@@ -86,14 +93,23 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Set TextField.scrollV
 		 */
-		public function set scrollText(v:int):void
+		public function set scrollText(v:Number):void
 		{
 			tField.scrollV = v;
 		}
+		
 		/**
 		 * 
+		 */
+		public function get scrollText():Number
+		{
+			return tField.scrollV;
+		}
+		
+		/**
+		 * Return TextField.maxScroll
 		 */
 		public function get textMaxScroll():int
 		{

@@ -22,7 +22,6 @@ package com.irzal.yt.media.thumbs
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TextEvent;
-	import flash.events.TouchEvent;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -121,11 +120,11 @@ package com.irzal.yt.media.thumbs
 			{
 				detail.y 	= vidBar.y + vidBar.height + 5;
 			}
+			detail.addEventListener(Tevent.WHEEL, onTevent);
+			addChild(detail);
 			
 			scrollBar.x = detail.x + detail.width - scrollBar.width;
 			scrollBar.y = detail.y;
-			
-			addChild(detail);
 			addChild(scrollBar);
 			
 			scrollBar.visible = false;
@@ -146,7 +145,16 @@ package com.irzal.yt.media.thumbs
 		
 		private function onTevent(e:Event):void 
 		{
-			textFieldScroll();
+			switch(e.type)
+			{
+				case Tevent.MOVE:
+					textFieldScroll();
+				break;
+				case Tevent.WHEEL:
+					scrollButton();
+				break;
+			}
+			
 		}
 		
 		private function onMouseEvent(e:MouseEvent):void 
@@ -196,6 +204,18 @@ package com.irzal.yt.media.thumbs
 			scrollBar.barY = scrollUpper;
 		}
 		
+		private function scrollButton():void
+		{
+			scrollBar.barY = scrollUpper + (((detail.scrollText+7) * scrollLower) / detail.textMaxScroll);
+			if ((detail.scrollText + 7) == detail.textMaxScroll)
+			{
+				scrollBar.barY = scrollLower;// + scrollBar.barHeightScaled;
+			} else if (detail.scrollText == 1)
+			{
+				scrollBar.barY = scrollUpper;
+			}
+		}
+		
 		private function textFieldScroll():void
 		{
 			var moveDrag:Number 	= scrollBar.barY - scrollUpper;
@@ -242,6 +262,7 @@ package com.irzal.yt.media.thumbs
 			thumbMask.graphics.drawRect(this.x, this.y, 380, 230);
 			thumbMask.graphics.endFill();
 		}
+		
 		private function createBg():void
 		{
 			graphics.beginFill(0x666666, 0.5);
