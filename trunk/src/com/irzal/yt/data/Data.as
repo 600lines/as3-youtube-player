@@ -42,7 +42,6 @@ package com.irzal.yt.data
 		public static const MEDIA_THUMBNAIL:String		= "thumbnail";
 		
 		private static var instance:Data = null;
-		private var instantiated:Boolean;
 		
 		private var _dataArray:Array;
 		private var _youtubeUser:String;
