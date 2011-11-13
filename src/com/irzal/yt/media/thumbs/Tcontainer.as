@@ -18,7 +18,7 @@
  */
 package com.irzal.yt.media.thumbs 
 {
-	import com.irzal.data.yt.Data;
+	import com.irzal.yt.data.Data;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TouchEvent;
@@ -27,6 +27,7 @@ package com.irzal.yt.media.thumbs
 	import flash.text.TextFormat;
 	import flash.events.MouseEvent;
 	import flash.display.DisplayObject;
+	import com.irzal.yt.events.Tevent;
 	
 	/**
 	 * ...

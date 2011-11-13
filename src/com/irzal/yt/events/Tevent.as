@@ -1,10 +1,11 @@
-package com.irzal.yt.media.thumbs 
+package com.irzal.yt.events 
 {
+	import flash.events.Event;
 	/**
 	 * ...
 	 * @author Dedet
 	 */
-	public class Tevent 
+	public class Tevent extends Event
 	{
 		public static const CLICK:String 		= "thumbClick";
 		public static const OVER:String 		= "thumbOver";
@@ -14,9 +15,16 @@ package com.irzal.yt.media.thumbs
 		public static const DOWN:String			= "mDown";
 		public static const UP:String			= "mUp";
 		
-		public function Tevent() 
+		private var _data:*;
+		public function Tevent(type:String, data:*= null)
 		{
-			
+			_data = data;
+			super(type);
+		}
+		
+		public function get data():* 
+		{
+			return _data;
 		}
 		
 	}

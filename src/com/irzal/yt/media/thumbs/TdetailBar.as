@@ -4,6 +4,7 @@ package com.irzal.yt.media.thumbs
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import com.irzal.yt.events.Tevent;
 	
 	/**
 	 * ...

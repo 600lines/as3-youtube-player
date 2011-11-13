@@ -1,9 +1,9 @@
 package com.irzal 
 {
-	import com.irzal.data.yt.Data;
-	import com.irzal.media.yt.thumbs.Tcontainer;
-	import com.irzal.media.yt.thumbs.Tloader;
-	import com.irzal.media.yt.VideoPlayer;
+	import com.irzal.yt.data.Data;
+	import com.irzal.yt.media.thumbs.Tcontainer;
+	import com.irzal.yt.media.thumbs.Tloader;
+	import com.irzal.yt.media.VideoPlayer;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -12,7 +12,7 @@ package com.irzal
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
-	import com.irzal.media.yt.thumbs.Tevent;
+	import com.irzal.yt.events.Tevent;
 	import flash.display.StageScaleMode;
 	/**
 	 * ...
