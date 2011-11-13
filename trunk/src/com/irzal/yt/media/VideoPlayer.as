@@ -16,7 +16,7 @@
 	
 	http://irzal.com
  */
-package com.irzal.media.yt 
+package com.irzal.yt.media 
 {
 	import flash.display.Loader;
 	import flash.display.Sprite;
