@@ -18,6 +18,7 @@
  */
 package com.irzal.yt.media 
 {
+	import com.irzal.yt.events.Tevent;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -38,6 +39,9 @@ package com.irzal.yt.media
 		
 		private var blur:BlurFilter = new BlurFilter(15,15,2);
 		
+		/**
+		 * 
+		 */
 		public function VideoPlayer() 
 		{
 			Security.allowDomain("*");
@@ -56,7 +60,6 @@ package com.irzal.yt.media
 			pLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			pLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loadProgress);
 			
-			
 			//for chromless player
 			//pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
 			
@@ -71,16 +74,51 @@ package com.irzal.yt.media
 			//---
 			addChild(pLoader);
 			pLoader.content.addEventListener("onReady", onPlayerReady);
+			pLoader.content.addEventListener("onStateChange", onPlayerState);
+		}
+		
+		private function onPlayerState(e:Event):void 
+		{
+			//Object(e).data onStateChange
+			//values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5)
+			switch(Object(e).data)
+			{
+				case -1:
+					//unstarted
+				break;
+				case 0:
+					//ended
+					dispatchEvent(new Tevent(Tevent.ENDED, Object(e).data));
+				break;
+				case 1:
+					//playing
+				break;
+				case 2:
+					//paused
+					dispatchEvent(new Tevent(Tevent.PAUSE));
+				break;
+				case 3:
+					//buffering
+				break;
+				case 4:
+					//cued
+				break;
+			}
+			
 		}
 		
 		private function onPlayerReady(e:Event):void 
 		{
-			dispatchEvent(new Event("playerReady"));
 			//stage.addEventListener(MouseEvent.CLICK, stageClick);
 			player = pLoader.content;
 			player.destroy();
+			dispatchEvent(new Tevent(Tevent.READY));
 		}
 		
+		/**
+		 * 
+		 * @param	id
+		 */
 		public function playVideo(id:String):void 
 		{
 			try 
@@ -99,16 +137,31 @@ package com.irzal.yt.media
 		{
 			
 		}
+		
+		/**
+		 * 
+		 */
 		public function disable():void
 		{
 			this.mouseChildren = false;
 			this.filters = [blur];
 		}
 		
+		/**
+		 * 
+		 */
 		public function enable():void
 		{
 			this.mouseChildren = true;
 			this.filters = null;
+		}
+		
+		/**
+		 * 
+		 */
+		public function resumeVideo():void
+		{
+			player.playVideo();
 		}
 	}
 

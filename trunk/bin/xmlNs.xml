@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<data xmlns:telepon="telepon">
-	<nama>Irzal</nama>
-	<telepon:group>
-		<telepon:gsm>+6285711469706</telepon:gsm>
-		<telepon:cdma>+6292728478</telepon:cdma>
-	</telepon:group>
-</data>
