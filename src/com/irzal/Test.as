@@ -58,11 +58,11 @@ package com.irzal
 			switch (e.type) 
 			{
 				case Tevent.READY:
-					trace("player ready");
+					//trace("player ready");
 					vidPlayer.disable();
 				break;
 				case Tevent.ENDED:
-					trace("ended");
+					//trace("ended");
 					vidPlayer.disable();
 					container.visible = true;
 				break;

@@ -87,7 +87,7 @@ package com.irzal.yt.data
 		public function loadSetup():void
 		{
 			setupLoader = new URLLoader();
-			setupLoader.load(new URLRequest("Setup.xml"));
+			setupLoader.load(new URLRequest("/swfs/youtube/Setup.xml"));
 			setupLoader.addEventListener(Event.COMPLETE, setupComplete);
 		}
 		
@@ -116,7 +116,8 @@ package com.irzal.yt.data
 		
 		private function urLoaderProg(e:ProgressEvent):void 
 		{
-			trace("getting youtube data");
+			//put progress here
+			//trace("getting youtube data");
 		}
 		
 		/**

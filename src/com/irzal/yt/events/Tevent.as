@@ -27,6 +27,7 @@ package com.irzal.yt.events
 		public static const MOVE:String			= "mMove";
 		public static const DOWN:String			= "mDown";
 		public static const UP:String			= "mUp";
+		public static const WHEEL:String		= "mWheel";
 		
 		private var _data:*;
 		
