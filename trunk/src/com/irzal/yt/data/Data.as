@@ -69,7 +69,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Create instance of Data
 		 * @return
 		 */
 		public static function getInstance():Data
@@ -84,11 +84,18 @@ package com.irzal.yt.data
 			return instance;
 		}
 		
+		/**
+		 * Load Setup.xml file
+		 */
 		public function loadSetup():void
 		{
 			setupLoader = new URLLoader();
-			setupLoader.load(new URLRequest("/swfs/youtube/Setup.xml"));
+			setupLoader.load(new URLRequest("Setup.xml"));
 			setupLoader.addEventListener(Event.COMPLETE, setupComplete);
+			if (_dataArray == null)
+			{
+				_dataArray = [];
+			}
 		}
 		
 		private function setupComplete(e:Event):void 
@@ -99,7 +106,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Load youtube user id
 		 * @param	value
 		 */
 		public function youtubeUser(value:String):void 
@@ -125,7 +132,7 @@ package com.irzal.yt.data
 		 * @param	feedType
 		 * @return
 		 */
-		public function getThumbArray(feedType:String):Array 
+		public function getFeedArray(feedType:String):Array 
 		{
 			return _dataArray["" + feedType + ""];
 		}
@@ -161,7 +168,6 @@ package com.irzal.yt.data
 		{
 			var entryLength:int = userXML.ns::entry.length();
 			var i:int;
-			_dataArray = [];
 			_dataArray[""+feedType+""]=[];
 			
 			while (i < entryLength)
@@ -175,9 +181,6 @@ package com.irzal.yt.data
 				_dataArray["" + feedType + ""][i]	= { 
 					id:_id, date:_date.slice(0, 10), duration:_duration, title:_title, description:_description, thumbnail:_thumbnail
 					};
-				//trace(_dataArray[""+feedType+""][i]["thumbnail"]);
-				//trace(_date.slice(0, 10));
-				//trace(_duration);
 				i++;
 			}
 			dispatchEvent(new Event(Data.COMPLETE));

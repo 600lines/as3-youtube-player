@@ -45,8 +45,6 @@ package com.irzal.yt.media
 		public function VideoPlayer() 
 		{
 			Security.allowDomain("*");
-			//this.mouseChildren = false;
-			//this.filters = [blur];
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -113,14 +111,16 @@ package com.irzal.yt.media
 			player = pLoader.content;
 			player.destroy();
 			dispatchEvent(new Tevent(Tevent.READY));
-			addEventListener(MouseEvent.MOUSE_OVER
+			//addEventListener(MouseEvent.MOUSE_OVER
 		}
 		
 		/**
-		 * 
-		 * @param	id
+		 * Play s specific video
+		 * @param	id YouTube ID
+		 * @param	start start the video from specific time
+		 * @param	quality the quality of video
 		 */
-		public function playVideo(id:String):void 
+		public function playVideo(id:String, start:int = 0, quality:String = "default"):void
 		{
 			try 
 			{
@@ -128,10 +128,10 @@ package com.irzal.yt.media
 			}
 			catch (err:Error)
 			{
-				trace(err.errorID,err.message);
+				//trace(err.errorID,err.message);
 			}
-			player.loadVideoById(id, 0, "default");
-			trace(id);
+			player.loadVideoById(id, start, quality);
+			//trace(id);
 		}
 		
 		private function loadProgress(e:ProgressEvent):void 
@@ -158,7 +158,7 @@ package com.irzal.yt.media
 		}
 		
 		/**
-		 * 
+		 * Resume play video
 		 */
 		public function resumeVideo():void
 		{

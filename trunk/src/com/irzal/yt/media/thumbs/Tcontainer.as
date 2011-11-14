@@ -132,9 +132,8 @@ package com.irzal.yt.media.thumbs
 			
 			vidBar.addEventListener(Tevent.MOVE, onVidTevent);
 			
-			createMask();
-			this.mask = thumbMask;
-			
+			//createMask(detail);
+			createMask(this);
 			createBg();
 		}
 		
@@ -255,18 +254,20 @@ package com.irzal.yt.media.thumbs
 			container.x = objectUpper - objectMove;
 		}
 		
-		private function createMask():void
+		private function createMask(sprite:Sprite):void
 		{
 			thumbMask = new Sprite();
 			thumbMask.graphics.beginFill(0xFFFFFF);
 			thumbMask.graphics.drawRect(this.x, this.y, 380, 230);
 			thumbMask.graphics.endFill();
+			
+			sprite.mask = thumbMask;
 		}
 		
 		private function createBg():void
 		{
 			graphics.beginFill(0x666666, 0.5);
-			graphics.drawRect(0, 0, 380, 250);
+			graphics.drawRect(0, 0, 380, 230);
 			graphics.endFill();
 		}
 	}
