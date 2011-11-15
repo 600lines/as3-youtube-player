@@ -28,6 +28,7 @@ package com.irzal.yt.media.thumbs
 	import flash.events.MouseEvent;
 	import flash.display.DisplayObject;
 	import com.irzal.yt.events.Tevent;
+	import com.irzal.yt.data.DataType;
 	
 	/**
 	 * ...
@@ -53,8 +54,6 @@ package com.irzal.yt.media.thumbs
 		private var scrollUpperVid:Number;
 		
 		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
-		
-		private var vidIndex:int;
 		
 		/**
 		 * 
@@ -90,12 +89,12 @@ package com.irzal.yt.media.thumbs
 			//trace(_data.getCurrentPage());
 			while (i < dataLength) 
 			{
-				var id:String 	= _data.getData(j, Data.VIDEO_ID);
-				var url:String 	= _data.getData(j, Data.MEDIA_THUMBNAIL);
+				var id:String 	= _data.getData(j, DataType.VIDEO_ID);
+				var url:String 	= _data.getData(j, DataType.MEDIA_THUMBNAIL);
 				
 				tArray[j] = new Tloader();
 				tArray[j].loadThumbs(id, url);
-				tArray[j].duration = _data.getData(j, Data.VIDEO_DURATION);
+				tArray[j].duration = _data.getData(j, DataType.VIDEO_DURATION);
 				if (j > 0)
 				{
 					tArray[j].x = tArray[j - 1].x + tArray[j - 1].width +8;
@@ -163,13 +162,13 @@ package com.irzal.yt.media.thumbs
 		{
 			var child:Object 		= e.target;
 			var parent:Object 		= e.currentTarget;
-			var title:String 		= _data.getData(parent.getChildIndex(child) , Data.MEDIA_TITLE);
-			var description:String 	= _data.getData(parent.getChildIndex(child), Data.MEDIA_DESCRIPTION);
+			var title:String 		= _data.getData(parent.getChildIndex(child) , DataType.MEDIA_TITLE);
+			var description:String 	= _data.getData(parent.getChildIndex(child), DataType.MEDIA_DESCRIPTION);
 			
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
-					var vidId:String = _data.getData(parent.getChildIndex(child), Data.VIDEO_ID);
+					var vidId:String = _data.getData(parent.getChildIndex(child), DataType.VIDEO_ID);
 					dispatchEvent(new Tevent(Tevent.CLICK, vidId));
 				break;
 				case MouseEvent.MOUSE_OVER:

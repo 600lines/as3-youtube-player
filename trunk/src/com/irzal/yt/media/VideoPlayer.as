@@ -36,7 +36,7 @@ package com.irzal.yt.media
 	{
 		private var player:Object;
 		private var pLoader:Loader;
-		private var chromeless:Boolean;
+		//private var chromeless:Boolean;
 		
 		private var blur:BlurFilter = new BlurFilter(15,15,2);
 		

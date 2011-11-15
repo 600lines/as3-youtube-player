@@ -31,27 +31,11 @@ package com.irzal.yt.data
 	 */
 	public class Data extends EventDispatcher
 	{	
-		//TODO create feed types class
-		private static const FEED_UPLOADS:String 		= "uploads";
-		
-		public static const COMPLETE:String 			= "complete";
-		
-		//YOUTUBE DATA TYPE
-		public static const VIDEO_ID:String				= "id";
-		public static const VIDEO_DURATION:String		= "duration";
-		public static const VIDEO_DATE:String			= "date";
-		public static const MEDIA_TITLE:String			= "title";
-		public static const MEDIA_DESCRIPTION:String 	= "description";
-		public static const MEDIA_THUMBNAIL:String		= "thumbnail";
-		//public static const TOTAL_VIDEO:String			= 
-		
 		private static var instance:Data = null;
 		
 		private var _feedIndexStart:int = 1;
 		private var _dataArray:Array;
 		private var _youtubeUser:String;
-		private var _page:Object;
-		private var _maxRestult:int;
 		
 		private var urLoader:URLLoader;
 		private var setupLoader:URLLoader;
@@ -67,13 +51,17 @@ package com.irzal.yt.data
 		
 		/**
 		 * Use Data.getInstance() instead of new
-		 * @param	e
+		 * @param	data
 		 */
-		public function Data(e:NewDataBlocker=null) 
+		public function Data(data:NewDataBlocker=null) 
 		{
-			if (e == null)
+			if (data == null)
 			{
 				throw new Error("Instantiation failed: Use Data.getInstance() instead of new.");
+			}
+			if (instance == null)
+			{
+				_dataArray = [];
 			}
 		}
 		
@@ -89,6 +77,7 @@ package com.irzal.yt.data
 			if (instance == null) 
 			{
 				instance = new Data(new NewDataBlocker());
+				//_dataArray = [];
 			}
 			return instance;
 		}
@@ -140,7 +129,7 @@ package com.irzal.yt.data
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
 			
 			//new grep data up to 50 per feed
-			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?start-index=" + feedIndex + "&max-results=" + maxResult + "&v=2"));
+			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + DataFeeds.FEED_UPLOADS + "?start-index=" + feedIndex + "&max-results=" + maxResult + "&v=2"));
 		}
 		
 		private function urLoaderProg(e:ProgressEvent):void 
@@ -154,7 +143,7 @@ package com.irzal.yt.data
 			urLoader.removeEventListener(Event.COMPLETE, urLoaderComplete);
 			//---
 			userXML = XML(urLoader.data);
-			setData(Data.FEED_UPLOADS);
+			setData(DataFeeds.FEED_UPLOADS);
 			//nameSpace(userXML.namespaceDeclarations());
 		}
 		
@@ -230,7 +219,7 @@ package com.irzal.yt.data
 		 */
 		public function getData(index:int, dataType:String):String
 		{
-			return _dataArray["" + Data.FEED_UPLOADS + ""][index]["" + dataType + ""];
+			return _dataArray["" + DataFeeds.FEED_UPLOADS + ""][index]["" + dataType + ""];
 		}
 		
 		/**
@@ -239,7 +228,7 @@ package com.irzal.yt.data
 		 */
 		public function get getDataLength():int
 		{
-			return _dataArray["" + Data.FEED_UPLOADS + ""].length;
+			return _dataArray["" + DataFeeds.FEED_UPLOADS + ""].length;
 		}
 		
 		/**
