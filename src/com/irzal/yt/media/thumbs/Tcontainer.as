@@ -83,26 +83,29 @@ package com.irzal.yt.media.thumbs
 		 */
 		public function setThumbnails():void
 		{
-			var dataLength:int = _data.getDataLength();
+			var dataLength:int = _data.getDataLength;
 			var i:int;
+			var j:int = _data.startIndex - 1;
 			
+			//trace(_data.getCurrentPage());
 			while (i < dataLength) 
 			{
-				var id:String 	= _data.getData(i, Data.VIDEO_ID);
-				var url:String 	= _data.getData(i, Data.MEDIA_THUMBNAIL);
+				var id:String 	= _data.getData(j, Data.VIDEO_ID);
+				var url:String 	= _data.getData(j, Data.MEDIA_THUMBNAIL);
 				
-				tArray[i] = new Tloader();
-				tArray[i].loadThumbs(id, url);
-				tArray[i].duration = _data.getData(i, Data.VIDEO_DURATION);
-				if (i > 0)
+				tArray[j] = new Tloader();
+				tArray[j].loadThumbs(id, url);
+				tArray[j].duration = _data.getData(j, Data.VIDEO_DURATION);
+				if (j > 0)
 				{
-					tArray[i].x = tArray[i - 1].x + tArray[i - 1].width +8;
+					tArray[j].x = tArray[j - 1].x + tArray[j - 1].width +8;
 				}
 				container.addEventListener(MouseEvent.CLICK, onMouseEvent);
 				container.addEventListener(MouseEvent.MOUSE_OVER, onMouseEvent);
 				container.addEventListener(MouseEvent.MOUSE_OUT, onMouseEvent);
 				//container.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseEvent);
-				container.addChild(tArray[i]);
+				container.addChild(tArray[j]);
+				j += 1;
 				i += 1;
 			}
 			

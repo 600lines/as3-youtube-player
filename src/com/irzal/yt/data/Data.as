@@ -24,37 +24,46 @@ package com.irzal.yt.data
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
+	import com.irzal.yt.events.DataEvents;
 	/**
 	 * Get Youtube user upload data, singleton type class. Use Data.getInstance() instead of new.
 	 * @author dedet
 	 */
 	public class Data extends EventDispatcher
 	{	
+		//TODO create feed types class
 		private static const FEED_UPLOADS:String 		= "uploads";
 		
 		public static const COMPLETE:String 			= "complete";
 		
+		//YOUTUBE DATA TYPE
 		public static const VIDEO_ID:String				= "id";
 		public static const VIDEO_DURATION:String		= "duration";
 		public static const VIDEO_DATE:String			= "date";
 		public static const MEDIA_TITLE:String			= "title";
 		public static const MEDIA_DESCRIPTION:String 	= "description";
 		public static const MEDIA_THUMBNAIL:String		= "thumbnail";
+		//public static const TOTAL_VIDEO:String			= 
 		
 		private static var instance:Data = null;
 		
+		private var _feedIndexStart:int = 1;
 		private var _dataArray:Array;
 		private var _youtubeUser:String;
+		private var _page:Object;
+		private var _maxRestult:int;
 		
 		private var urLoader:URLLoader;
 		private var setupLoader:URLLoader;
 		private var userXML:XML;
 		
-		private var ns:Namespace;
-		private var nsMedia:Namespace;
-		private var nsGd:Namespace;
-		private var nsOs:Namespace;
-		private var nsYt:Namespace;
+		
+		//manual name space
+		private var ns:Namespace 		= new Namespace("http://www.w3.org/2005/Atom");
+		private var nsMedia:Namespace 	= new Namespace("http://search.yahoo.com/mrss/");
+		private var nsGd:Namespace		= new Namespace("http://schemas.google.com/g/2005");
+		private var nsOs:Namespace		= new Namespace("http://a9.com/-/spec/opensearch/1.1/");
+		private var nsYt:Namespace		= new Namespace("http://gdata.youtube.com/schemas/2007");
 		
 		/**
 		 * Use Data.getInstance() instead of new
@@ -102,23 +111,36 @@ package com.irzal.yt.data
 		{
 			setupLoader.removeEventListener(Event.COMPLETE, setupComplete);
 			userXML = XML (setupLoader.data);
-			youtubeUser(userXML.user);
+			youtubeUser(_feedIndexStart, 50, userXML.user);
 		}
 		
 		/**
-		 * Load youtube user id
-		 * @param	value
+		 * 
+		 * @param	feedIndex
+		 * @param	maxResult
+		 * @param	userId
 		 */
-		public function youtubeUser(value:String):void 
+		public function youtubeUser(feedIndex:int = 1, maxResult:int = 50, userId:String = null):void		
 		{
+			if (maxResult > 50 || maxResult < 1) throw new Error("Error: maxResult:int cannot be 0 or negatif integer, start from 1 until 50");
+			//---
 			urLoader = new URLLoader();
-			_youtubeUser = value;
+			
+			if (userId != null)
+			{
+				_youtubeUser = userId;
+			}
+			
 			urLoader.addEventListener(ProgressEvent.PROGRESS, urLoaderProg);
 			urLoader.addEventListener(Event.COMPLETE, urLoaderComplete);
 			
 			//dynamic feed types
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + feedType + "?v=2"));
-			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
+			//old grep data
+			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
+			
+			//new grep data up to 50 per feed
+			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?start-index=" + feedIndex + "&max-results=" + maxResult + "&v=2"));
 		}
 		
 		private function urLoaderProg(e:ProgressEvent):void 
@@ -127,27 +149,21 @@ package com.irzal.yt.data
 			//trace("getting youtube data");
 		}
 		
-		/**
-		 * 
-		 * @param	feedType
-		 * @return
-		 */
-		public function getFeedArray(feedType:String):Array 
-		{
-			return _dataArray["" + feedType + ""];
-		}
-		
 		private function urLoaderComplete(e:Event):void 
 		{
 			urLoader.removeEventListener(Event.COMPLETE, urLoaderComplete);
 			//---
 			userXML = XML(urLoader.data);
-			nameSpace(userXML.namespaceDeclarations());
+			setData(Data.FEED_UPLOADS);
+			//nameSpace(userXML.namespaceDeclarations());
 		}
 		
-		private function nameSpace(xmlNs:Array):void
+		//disable for now because theres an addition XML name space in the next feed page
+		//name space will be input manualy
+		/*private function nameSpace(xmlNs:Array):void
 		{
 			var i:int;
+			trace(xmlNs.length);
 			
 			while (i < xmlNs.length)
 			{
@@ -161,49 +177,123 @@ package com.irzal.yt.data
 				}
 				i+=1;
 			}
-			setData(Data.FEED_UPLOADS);
-		}
+			//setData(Data.FEED_UPLOADS);
+		}*/
 		
 		private function setData(feedType:String):void
 		{
-			var entryLength:int = userXML.ns::entry.length();
+			var entryLength:int 	= userXML.ns::entry.length();
+			var startIndex:int 		= int(userXML.nsOs::startIndex);
+			var itemsPerPage:int 	= int(userXML.nsOs::itemsPerPage);
 			var i:int;
+			var j:int;
+			if (getCurrentPage != getPageLength && startIndex > 1)
+			{
+				j = startIndex - 1;
+				_feedIndexStart = startIndex + itemsPerPage;
+			}
+			
 			_dataArray[""+feedType+""]=[];
 			
 			while (i < entryLength)
 			{
-				var _id:String 				= userXML.ns::entry[i].nsMedia::group.nsYt::videoid;
-				var _duration:String		= userXML.ns::entry[i].nsMedia::group.nsYt::duration.@seconds;
-				var _date:String			= userXML.ns::entry[i].nsMedia::group.nsYt::uploaded;
-				var _title:String 			= userXML.ns::entry[i].nsMedia::group.nsMedia::title;
-				var _description:String 	= userXML.ns::entry[i].nsMedia::group.nsMedia::description;
-				var _thumbnail:String 		= userXML.ns::entry[i].nsMedia::group.nsMedia::thumbnail[0].@url;
+				var _id:String 				= userXML.ns::entry[j].nsMedia::group.nsYt::videoid;
+				var _duration:String		= userXML.ns::entry[j].nsMedia::group.nsYt::duration.@seconds;
+				var _date:String			= userXML.ns::entry[j].nsMedia::group.nsYt::uploaded;
+				var _title:String 			= userXML.ns::entry[j].nsMedia::group.nsMedia::title;
+				var _description:String 	= userXML.ns::entry[j].nsMedia::group.nsMedia::description;
+				var _thumbnail:String 		= userXML.ns::entry[j].nsMedia::group.nsMedia::thumbnail[0].@url;
 				_dataArray["" + feedType + ""][i]	= { 
 					id:_id, date:_date.slice(0, 10), duration:_duration, title:_title, description:_description, thumbnail:_thumbnail
 					};
-				i++;
+				j+=1;
+				i+=1;
 			}
-			dispatchEvent(new Event(Data.COMPLETE));
+			dispatchEvent(new Event(DataEvents.DATA_COMPLETE));
 		}
 		
 		/**
 		 * 
-		 * @param	media
-		 * @param	index
+		 * @param	feedType
 		 * @return
 		 */
-		public function getData(index:int, media:String):String
+		public function getFeedArray(feedType:String):Array 
 		{
-			return _dataArray["" + Data.FEED_UPLOADS + ""][index]["" + media + ""];
+			return _dataArray["" + feedType + ""];
+		}
+		
+		/**
+		 * 
+		 * @param	index
+		 * @param	dataType
+		 * @return
+		 */
+		public function getData(index:int, dataType:String):String
+		{
+			return _dataArray["" + Data.FEED_UPLOADS + ""][index]["" + dataType + ""];
 		}
 		
 		/**
 		 * 
 		 * @return
 		 */
-		public function getDataLength():int
+		public function get getDataLength():int
 		{
 			return _dataArray["" + Data.FEED_UPLOADS + ""].length;
+		}
+		
+		/**
+		 * 
+		 */
+		public function get getCurrentPage():Number
+		{
+			var startIndex:Number 	= int(userXML.nsOs::startIndex);
+			var itemsPerPage:Number = Number(userXML.nsOs::itemsPerPage);
+			return Math.ceil(startIndex/itemsPerPage);
+			//return 100%3;
+		}
+		
+		/**
+		 * 
+		 */
+		public function get getPageLength():Number
+		{
+			var totalResults:Number = Number(userXML.nsOs::totalResults);
+			var itemsPerPage:Number = Number(userXML.nsOs::itemsPerPage);
+			//return Math.ceil(totalResults / itemsPerPage);
+			return totalResults / itemsPerPage;
+		}
+		
+		/**
+		 * 
+		 */
+		public function get getUserId():String
+		{
+			return _youtubeUser;
+		}
+		
+		/**
+		 * 
+		 */
+		public function get feedIndexStart():int 
+		{
+			return _feedIndexStart;
+		}
+		
+		/**
+		 * 
+		 */
+		public function get nextPage():Boolean
+		{
+			return (getCurrentPage != getPageLength && startIndex > 1);
+		}
+		
+		/**
+		 * 
+		 */
+		public function get startIndex():int
+		{
+			return int(userXML.nsOs::startIndex);
 		}
 	}
 }

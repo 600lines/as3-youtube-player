@@ -23,6 +23,7 @@ package com.irzal.yt.media.thumbs
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.text.TextFieldAutoSize
 	
 	/**
 	 * ...
