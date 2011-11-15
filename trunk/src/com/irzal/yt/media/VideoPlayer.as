@@ -18,7 +18,7 @@
  */
 package com.irzal.yt.media 
 {
-	import com.irzal.yt.events.Tevent;
+	import com.irzal.yt.events.VideoEvents;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -27,6 +27,7 @@ package com.irzal.yt.media
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	import flash.filters.BlurFilter;
+	import flash.events.VideoEvent
 	/**
 	 * ...
 	 * @author dedet
@@ -86,14 +87,14 @@ package com.irzal.yt.media
 				break;
 				case 0:
 					//ended
-					dispatchEvent(new Tevent(Tevent.ENDED, Object(e).data));
+					dispatchEvent(new VideoEvents(VideoEvents.ENDED, Object(e).data));
 				break;
 				case 1:
 					//playing
 				break;
 				case 2:
 					//paused
-					dispatchEvent(new Tevent(Tevent.PAUSE));
+					dispatchEvent(new VideoEvents(VideoEvents.PAUSE));
 				break;
 				case 3:
 					//buffering
@@ -110,7 +111,7 @@ package com.irzal.yt.media
 			//stage.addEventListener(MouseEvent.CLICK, stageClick);
 			player = pLoader.content;
 			player.destroy();
-			dispatchEvent(new Tevent(Tevent.READY));
+			dispatchEvent(new VideoEvents(VideoEvents.READY));
 			//addEventListener(MouseEvent.MOUSE_OVER
 		}
 		
@@ -130,6 +131,7 @@ package com.irzal.yt.media
 			{
 				//trace(err.errorID,err.message);
 			}
+			trace(id);
 			player.loadVideoById(id, start, quality);
 			//trace(id);
 		}

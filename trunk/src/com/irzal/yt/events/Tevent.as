@@ -9,16 +9,6 @@ package com.irzal.yt.events
 	 */
 	public class Tevent extends Event
 	{
-		//video event
-		public static const PAUSE:String 		= "vidPause";
-		public static const PLAY:String			= "vidPlay";
-		public static const STOP:String			= "vidStop";
-		public static const ENDED:String		= "vidEnded";
-		public static const READY:String		= "vidReady";
-		public static const CUED:String			= "vidCued";
-		public static const UNSTARTED:String	= "vidUnstarted";
-		public static const BUFFERING:String	= "vidBuffering";
-		
 		//mouse event
 		public static const CLICK:String 		= "thumbClick";
 		public static const OVER:String 		= "thumbOver";
@@ -29,27 +19,23 @@ package com.irzal.yt.events
 		public static const UP:String			= "mUp";
 		public static const WHEEL:String		= "mWheel";
 		
-		private var _data:*;
+		public var data:*;
 		
 		/**
 		 * 
 		 * @param	type
 		 * @param	data
 		 */
-		public function Tevent(type:String, data:*= null)
+		public function Tevent(type:String, _data:*= null)
 		{
-			_data = data;
+			data = _data;
 			super(type);
 		}
 		
-		/**
-		 * 
-		 */
-		public function get data():* 
+		override public function clone():Event
 		{
-			return _data;
+			return new Tevent(type, data);
 		}
-		
 	}
 
 }

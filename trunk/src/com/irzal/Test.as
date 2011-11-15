@@ -4,6 +4,9 @@ package com.irzal
 	import com.irzal.yt.media.thumbs.Tcontainer;
 	import com.irzal.yt.media.thumbs.Tloader;
 	import com.irzal.yt.media.VideoPlayer;
+	import com.irzal.yt.events.DataEvents;
+	import com.irzal.yt.events.VideoEvents
+	import flash.events.VideoEvent;
 	import com.irzal.yt.events.Tevent;
 	
 	import flash.display.Sprite;
@@ -28,21 +31,22 @@ package com.irzal
 		{
 			data = Data.getInstance();
 			data.loadSetup();
-			data.addEventListener(Data.COMPLETE, onData);
+			data.addEventListener(DataEvents.DATA_COMPLETE, onData);
 			
 			container = new Tcontainer();
 			container.addEventListener(Tevent.CLICK , onContainerClick);
 			//container.mouseEnabled = false;
 			
 			vidPlayer = new VideoPlayer();
-			vidPlayer.addEventListener(Tevent.READY, onVideoEvent);
-			vidPlayer.addEventListener(Tevent.ENDED, onVideoEvent);
-			vidPlayer.addEventListener(Tevent.PAUSE, onVideoEvent);
+			vidPlayer.addEventListener(VideoEvents.READY, onVideoEvent);
+			vidPlayer.addEventListener(VideoEvents.ENDED, onVideoEvent);
+			vidPlayer.addEventListener(VideoEvents.PAUSE, onVideoEvent);
 			addChild(vidPlayer);			
 		}
 		
 		private function onContainerClick(e:Tevent):void 
 		{
+			trace("e.data",e.data);
 			if (currentPlay == e.data) vidPlayer.resumeVideo()
 			else 
 			{
@@ -57,16 +61,16 @@ package com.irzal
 		{
 			switch (e.type) 
 			{
-				case Tevent.READY:
+				case VideoEvents.READY:
 					//trace("player ready");
 					vidPlayer.disable();
 				break;
-				case Tevent.ENDED:
+				case VideoEvents.ENDED:
 					//trace("ended");
 					vidPlayer.disable();
 					container.visible = true;
 				break;
-				case Tevent.PAUSE:
+				case VideoEvents.PAUSE:
 					vidPlayer.disable();
 					container.visible = true;
 				break;
