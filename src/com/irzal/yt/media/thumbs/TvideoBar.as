@@ -41,8 +41,6 @@ package com.irzal.yt.media.thumbs
 		
 		private function onMouseEventBar(e:MouseEvent):void 
 		{
-			var child:Object 	= e.target;
-			var parent:Object 	= e.currentTarget;
 			var rect:Rectangle = new Rectangle(0, 0, 0, (200-Math.round(bar.height)));
 			
 			switch(e.type)
@@ -69,7 +67,7 @@ package com.irzal.yt.media.thumbs
 			bar = new Sprite();
 			bar.buttonMode = true;
 			bar.graphics.beginFill(0xFFFFFF, 1);
-			bar.graphics.drawRect( 0, 0, 10, 10);
+			bar.graphics.drawRect( 0, 0, 10, 40);
 			bar.graphics.endFill();
 			addChild(bar);
 		}
