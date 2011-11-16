@@ -33,7 +33,6 @@ package com.irzal.yt.data
 	{	
 		private static var instance:Data = null;
 		
-		private var _feedIndexStart:int = 1;
 		private var _dataArray:Array;
 		private var _youtubeUser:String;
 		
@@ -41,6 +40,9 @@ package com.irzal.yt.data
 		private var setupLoader:URLLoader;
 		private var userXML:XML;
 		
+		private var _feedIndexStart:int = 1;
+		//maximum feed result
+		public var maxFeedResult:int = 25;
 		
 		//manual name space
 		private var ns:Namespace 		= new Namespace("http://www.w3.org/2005/Atom");
@@ -90,17 +92,17 @@ package com.irzal.yt.data
 			setupLoader = new URLLoader();
 			setupLoader.load(new URLRequest("Setup.xml"));
 			setupLoader.addEventListener(Event.COMPLETE, setupComplete);
-			if (_dataArray == null)
+			/*if (_dataArray == null)
 			{
 				_dataArray = [];
-			}
+			}*/
 		}
 		
 		private function setupComplete(e:Event):void 
 		{
 			setupLoader.removeEventListener(Event.COMPLETE, setupComplete);
 			userXML = XML (setupLoader.data);
-			youtubeUser(_feedIndexStart, 50, userXML.user);
+			youtubeUser(maxFeedResult, _feedIndexStart, userXML.user);
 		}
 		
 		/**
@@ -109,17 +111,22 @@ package com.irzal.yt.data
 		 * @param	maxResult
 		 * @param	userId
 		 */
-		public function youtubeUser(feedIndex:int = 1, maxResult:int = 50, userId:String = null):void		
+		public function youtubeUser(maxResult:int = 0, feedIndex:int = 0, userId:String = null):void
 		{
-			if (maxResult > 50 || maxResult < 1) throw new Error("Error: maxResult:int cannot be 0 or negatif integer, start from 1 until 50");
-			//---
+
 			urLoader = new URLLoader();
-			
 			if (userId != null)
 			{
 				_youtubeUser = userId;
 			}
-			
+			if (maxResult == 0)
+			{
+				maxResult = maxFeedResult;
+			}
+			if (feedIndex == 0)
+			{
+				feedIndex = _feedIndexStart;
+			}
 			urLoader.addEventListener(ProgressEvent.PROGRESS, urLoaderProg);
 			urLoader.addEventListener(Event.COMPLETE, urLoaderComplete);
 			
@@ -176,23 +183,26 @@ package com.irzal.yt.data
 			var itemsPerPage:int 	= int(userXML.nsOs::itemsPerPage);
 			var i:int;
 			var j:int;
-			if (getCurrentPage != getPageLength && startIndex > 1)
-			{
-				j = startIndex - 1;
-				_feedIndexStart = startIndex + itemsPerPage;
-			}
 			
-			_dataArray[""+feedType+""]=[];
+			j = startIndex - 1;
+			_feedIndexStart = startIndex + itemsPerPage;
+			trace("j", j);
+			trace("_feedIndexStart",_feedIndexStart, "startIndex",startIndex,"itemsPerPage",itemsPerPage);
+			
+			if (_dataArray["" + feedType + ""] == null)
+			{
+				_dataArray["" + feedType + ""] = [];
+			}
 			
 			while (i < entryLength)
 			{
-				var _id:String 				= userXML.ns::entry[j].nsMedia::group.nsYt::videoid;
-				var _duration:String		= userXML.ns::entry[j].nsMedia::group.nsYt::duration.@seconds;
-				var _date:String			= userXML.ns::entry[j].nsMedia::group.nsYt::uploaded;
-				var _title:String 			= userXML.ns::entry[j].nsMedia::group.nsMedia::title;
-				var _description:String 	= userXML.ns::entry[j].nsMedia::group.nsMedia::description;
-				var _thumbnail:String 		= userXML.ns::entry[j].nsMedia::group.nsMedia::thumbnail[0].@url;
-				_dataArray["" + feedType + ""][i]	= { 
+				var _id:String 				= userXML.ns::entry[i].nsMedia::group.nsYt::videoid;
+				var _duration:String		= userXML.ns::entry[i].nsMedia::group.nsYt::duration.@seconds;
+				var _date:String			= userXML.ns::entry[i].nsMedia::group.nsYt::uploaded;
+				var _title:String 			= userXML.ns::entry[i].nsMedia::group.nsMedia::title;
+				var _description:String 	= userXML.ns::entry[i].nsMedia::group.nsMedia::description;
+				var _thumbnail:String 		= userXML.ns::entry[i].nsMedia::group.nsMedia::thumbnail[0].@url;
+				_dataArray["" + feedType + ""][j]	= { 
 					id:_id, date:_date.slice(0, 10), duration:_duration, title:_title, description:_description, thumbnail:_thumbnail
 					};
 				j+=1;
@@ -226,9 +236,10 @@ package com.irzal.yt.data
 		 * 
 		 * @return
 		 */
-		public function get getDataLength():int
+		public function getDataLength(feedType:String=null):int
 		{
-			return _dataArray["" + DataFeeds.FEED_UPLOADS + ""].length;
+			if (feedType == null) feedType = DataFeeds.FEED_UPLOADS;
+			return _dataArray["" + feedType + ""].length;
 		}
 		
 		/**
@@ -250,7 +261,7 @@ package com.irzal.yt.data
 			var totalResults:Number = Number(userXML.nsOs::totalResults);
 			var itemsPerPage:Number = Number(userXML.nsOs::itemsPerPage);
 			//return Math.ceil(totalResults / itemsPerPage);
-			return totalResults / itemsPerPage;
+			return Math.ceil(totalResults / itemsPerPage);
 		}
 		
 		/**
@@ -264,7 +275,7 @@ package com.irzal.yt.data
 		/**
 		 * 
 		 */
-		public function get feedIndexStart():int 
+		public function get getFeedIndexStart():int 
 		{
 			return _feedIndexStart;
 		}
@@ -274,7 +285,7 @@ package com.irzal.yt.data
 		 */
 		public function get nextPage():Boolean
 		{
-			return (getCurrentPage != getPageLength && startIndex > 1);
+			return (getCurrentPage != getPageLength);
 		}
 		
 		/**
