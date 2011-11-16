@@ -113,7 +113,6 @@ package com.irzal.yt.data
 		 */
 		public function youtubeUser(maxResult:int = 0, feedIndex:int = 0, userId:String = null):void
 		{
-
 			urLoader = new URLLoader();
 			if (userId != null)
 			{
