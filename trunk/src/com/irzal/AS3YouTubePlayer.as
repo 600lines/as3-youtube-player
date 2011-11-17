@@ -1,5 +1,7 @@
 package com.irzal 
 {
+	import com.irzal.yt.button.CloseButton;
+	import com.irzal.yt.button.PlayListButton;
 	import com.irzal.yt.data.Data;
 	import com.irzal.yt.media.thumbs.Tcontainer;
 	import com.irzal.yt.media.thumbs.Tloader;
@@ -19,15 +21,22 @@ package com.irzal
 	 * ...
 	 * @author dedet
 	 */
-	public class Test extends Sprite 
+	public class AS3YouTubePlayer extends Sprite 
 	{
+		private var blur:BlurFilter = new BlurFilter(5, 5, 1);
+		
 		private var data:Data;
 		private var vidPlayer:VideoPlayer;
 		private var container:Tcontainer;
-		private var blur:BlurFilter = new BlurFilter(5, 5, 1);
 		private var currentPlay:String;
+		private var listButton:PlayListButton;
+		private var closeButton:CloseButton;
+		public function AS3YouTubePlayer() 
+		{
+			init();
+		}
 		
-		public function Test() 
+		private function init():void
 		{
 			data = Data.getInstance();
 			data.loadSetup();
@@ -41,7 +50,29 @@ package com.irzal
 			vidPlayer.addEventListener(VideoEvents.READY, onVideoEvent);
 			vidPlayer.addEventListener(VideoEvents.ENDED, onVideoEvent);
 			vidPlayer.addEventListener(VideoEvents.PAUSE, onVideoEvent);
-			//addChild(vidPlayer);			
+			//addChild(vidPlayer);
+			
+			listButton = new PlayListButton();
+			addChild(listButton);
+			listButton.x = stage.stageWidth - listButton.width;
+			listButton.y = 70;
+			listButton.addEventListener(Tevent.CLICK, onListButtonClick);
+			
+			closeButton = new CloseButton();
+			closeButton.addEventListener(Tevent.CLICK, onCloseButtonClick);
+		}
+		
+		private function onCloseButtonClick(e:Tevent):void 
+		{
+			closeButton.visible = false;
+			container.visible = false;
+			vidPlayer.enable();
+		}
+		
+		private function onListButtonClick(e:Tevent):void 
+		{
+			container.visible = true;
+			closeButton.visible = true;
 		}
 		
 		private function onContainerClick(e:Tevent):void 
@@ -49,7 +80,6 @@ package com.irzal
 			switch(e.data)
 			{
 				case true:
-					trace(e.data);
 					data.youtubeUser();
 					data.addEventListener(DataEvents.DATA_COMPLETE, onData);
 				break;
@@ -61,6 +91,7 @@ package com.irzal
 					currentPlay = e.data;
 				}
 				container.visible = false;
+				closeButton.visible = false;
 				vidPlayer.enable();
 			}
 			
@@ -106,6 +137,9 @@ package com.irzal
 				vidPlayer.videoFirsID = data.getData(0, DataType.VIDEO_ID);
 				addChildAt(vidPlayer, 0);
 			}
+			addChild(closeButton);
+			closeButton.y = container.y;
+			closeButton.x = container.x + 380;
 		}
 	}
 

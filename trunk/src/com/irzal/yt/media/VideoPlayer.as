@@ -38,7 +38,7 @@ package com.irzal.yt.media
 		private var pLoader:Loader;
 		//private var chromeless:Boolean;
 		
-		private var blur:BlurFilter = new BlurFilter(10, 10, 2);
+		private var blur:BlurFilter = new BlurFilter(5, 5, 2);
 		private var _videoFirsID:String;
 		
 		/**
@@ -75,13 +75,13 @@ package com.irzal.yt.media
 			addChild(pLoader);
 			pLoader.content.addEventListener("onReady", onPlayerReady);
 			pLoader.content.addEventListener("onStateChange", onPlayerState);
-			pLoader.content.addEventListener(MouseEvent.MOUSE_DOWN, onPlayerClick);
+			//pLoader.content.addEventListener(MouseEvent.MOUSE_DOWN, onPlayerClick);
 		}
 		
-		private function onPlayerClick(e:MouseEvent):void 
+		/*private function onPlayerClick(e:MouseEvent):void 
 		{
 			trace(e.currentTarget.name)
-		}
+		}*/
 		
 		private function onPlayerState(e:Event):void 
 		{
@@ -102,7 +102,7 @@ package com.irzal.yt.media
 				break;
 				case 2:
 					//paused
-					dispatchEvent(new VideoEvents(VideoEvents.PAUSE));
+					//dispatchEvent(new VideoEvents(VideoEvents.PAUSE));
 				break;
 				case 3:
 					//buffering
