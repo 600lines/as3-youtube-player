@@ -77,7 +77,7 @@ package com.irzal.yt.media.thumbs
 		 * @param	title
 		 * @param	longDescription
 		 */
-		public function description(title:String,longDescription:String):void
+		public function description(title:String,longDescription:String=""):void
 		{
 			//tField.setTextFormat(tFormat);
 			tField.htmlText = "<b>" + title + "</b>\n\r";

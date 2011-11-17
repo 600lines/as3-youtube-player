@@ -38,7 +38,8 @@ package com.irzal.yt.media
 		private var pLoader:Loader;
 		//private var chromeless:Boolean;
 		
-		private var blur:BlurFilter = new BlurFilter(15,15,2);
+		private var blur:BlurFilter = new BlurFilter(10, 10, 2);
+		private var _videoFirsID:String;
 		
 		/**
 		 * 
@@ -63,7 +64,7 @@ package com.irzal.yt.media
 			//pLoader.load(new URLRequest("http://www.youtube.com/apiplayer?version=3"));
 			
 			//default youtube play bar
-			pLoader.load(new URLRequest("http://www.youtube.com/v/6dM9rDTGs8c?version=3"));
+			pLoader.load(new URLRequest("http://www.youtube.com/v/" + _videoFirsID + "?version=3"));
 		}
 		
 		private function loadComplete(e:Event):void 
@@ -74,12 +75,19 @@ package com.irzal.yt.media
 			addChild(pLoader);
 			pLoader.content.addEventListener("onReady", onPlayerReady);
 			pLoader.content.addEventListener("onStateChange", onPlayerState);
+			pLoader.content.addEventListener(MouseEvent.MOUSE_DOWN, onPlayerClick);
+		}
+		
+		private function onPlayerClick(e:MouseEvent):void 
+		{
+			trace(e.currentTarget.name)
 		}
 		
 		private function onPlayerState(e:Event):void 
 		{
 			//Object(e).data onStateChange
 			//values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5)
+			trace(Object(e).data)
 			switch(Object(e).data)
 			{
 				case -1:
@@ -110,7 +118,7 @@ package com.irzal.yt.media
 		{
 			//stage.addEventListener(MouseEvent.CLICK, stageClick);
 			player = pLoader.content;
-			player.destroy();
+			//player.destroy();
 			dispatchEvent(new VideoEvents(VideoEvents.READY));
 			//addEventListener(MouseEvent.MOUSE_OVER
 		}
@@ -131,7 +139,6 @@ package com.irzal.yt.media
 			{
 				//trace(err.errorID,err.message);
 			}
-			trace(id);
 			player.loadVideoById(id, start, quality);
 			//trace(id);
 		}
@@ -165,6 +172,11 @@ package com.irzal.yt.media
 		public function resumeVideo():void
 		{
 			player.playVideo();
+		}
+		
+		public function set videoFirsID(value:String):void 
+		{
+			_videoFirsID = value;
 		}
 	}
 
