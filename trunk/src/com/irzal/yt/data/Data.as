@@ -193,6 +193,10 @@ package com.irzal.yt.data
 				_dataArray["" + feedType + ""] = [];
 			}
 			
+			/*if (nextPage)
+			{
+				entryLength += 1;
+			}*/
 			while (i < entryLength)
 			{
 				var _id:String 				= userXML.ns::entry[i].nsMedia::group.nsYt::videoid;
@@ -293,6 +297,12 @@ package com.irzal.yt.data
 		public function get startIndex():int
 		{
 			return int(userXML.nsOs::startIndex);
+		}
+		public function entryLength():int
+		{
+			//return int((userXML.nsOs::entry.length())
+			//trace("entry",userXML.nsOs::entry.length());
+			return userXML.ns::entry.length();
 		}
 	}
 }

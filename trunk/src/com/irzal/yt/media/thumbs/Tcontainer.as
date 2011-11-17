@@ -82,19 +82,42 @@ package com.irzal.yt.media.thumbs
 		 */
 		public function setThumbnails():void
 		{
-			var dataLength:int = _data.getDataLength;
+			//var dataLength:int = _data.maxFeedResult;
+			var dataLength:int;// = _data.getDataLength();
 			var i:int;
 			var j:int = _data.startIndex - 1;
-			
+			trace("entry",_data.entryLength());
 			//trace(_data.getCurrentPage());
+			if (container.numChildren > 1)
+				{
+					container.removeChildAt(container.numChildren - 1);
+				}
+			if (_data.nextPage)
+			{
+				dataLength = _data.maxFeedResult + 1;
+			} else dataLength = _data.entryLength();
+			
 			while (i < dataLength) 
 			{
-				var id:String 	= _data.getData(j, DataType.VIDEO_ID);
-				var url:String 	= _data.getData(j, DataType.MEDIA_THUMBNAIL);
-				
+				//trace("j",j);
 				tArray[j] = new Tloader();
-				tArray[j].loadThumbs(id, url);
-				tArray[j].duration = _data.getData(j, DataType.VIDEO_DURATION);
+				//trace(_data.nextPage)
+				//trace(i == (dataLength - 1));
+				switch(_data.nextPage && i==(dataLength-1))
+				{
+					case true:
+						tArray[j].loadThumbs("more");
+						tArray[j].duration("more");
+					break;
+					default:
+						var id:String 	= _data.getData(j, DataType.VIDEO_ID);
+						var url:String 	= _data.getData(j, DataType.MEDIA_THUMBNAIL);
+						
+						tArray[j].loadThumbs(id, url);
+						tArray[j].duration(_data.getData(j, DataType.VIDEO_DURATION));
+					
+				}
+				
 				if (j > 0)
 				{
 					tArray[j].x = tArray[j - 1].x + tArray[j - 1].width +8;
@@ -112,7 +135,7 @@ package com.irzal.yt.media.thumbs
 			vidBar.x = 100;
 			addChild(vidBar);
 			checkObjectDragHeight();
-			vidBar.rotation = -90;
+			//vidBar.rotation = -90;
 			
 			//chek vidBar visible
 			if (vidBar.visible == false)
@@ -162,20 +185,38 @@ package com.irzal.yt.media.thumbs
 		{
 			var child:Object 		= e.target;
 			var parent:Object 		= e.currentTarget;
-			var title:String 		= _data.getData(parent.getChildIndex(child) , DataType.MEDIA_TITLE);
-			var description:String 	= _data.getData(parent.getChildIndex(child), DataType.MEDIA_DESCRIPTION);
 			
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
-					var vidId:String = _data.getData(parent.getChildIndex(child), DataType.VIDEO_ID);
-					dispatchEvent(new Tevent(Tevent.CLICK, vidId));
+					if (child.name == "more")
+					{
+						trace("this will load more videos");
+						dispatchEvent(new Tevent(Tevent.CLICK, _data.nextPage));
+					}
+					else {
+						var vidId:String = _data.getData(parent.getChildIndex(child), DataType.VIDEO_ID);
+						dispatchEvent(new Tevent(Tevent.CLICK, vidId));
+					}
 				break;
 				case MouseEvent.MOUSE_OVER:
 					//dispatchEvent(new Event(Tevent.OVER));
-					detail.description(title, description);
-					child.filters = [glow];
+					trace("parent.getChildIndex(child)",parent.getChildIndex(child));
+					trace("_data.getDataLength",_data.getDataLength());
+					if (child.name == "more")
+					{
+						detail.description("Load More playlist");
+						trace(parent.getChildIndex(child));
+					}
+					else {
+						var title:String 		= _data.getData(parent.getChildIndex(child) , DataType.MEDIA_TITLE);
+						var description:String 	= _data.getData(parent.getChildIndex(child), DataType.MEDIA_DESCRIPTION);
+						detail.description(title, description);
+						
+					}
 					checkTextFieldHeight();
+					child.filters = [glow];
+					
 				break;
 				case MouseEvent.MOUSE_OUT:
 					//dispatchEvent(new Event(Tevent.OUT));
@@ -226,8 +267,8 @@ package com.irzal.yt.media.thumbs
 		
 		private function checkObjectDragHeight():void
 		{
-			var percObjectHeight:Number = vidBar.height/container.width;
-			var percSliderHeight:Number = vidBar.height / vidBar.barHeightReset;
+			var percObjectHeight:Number = vidBar.width / container.width;
+			var percSliderHeight:Number = vidBar.width / vidBar.barWidthReset;
 			
 			if(percObjectHeight>=1)
 			{ 
@@ -235,21 +276,22 @@ package com.irzal.yt.media.thumbs
 			} else
 			{
 				vidBar.visible=true;
-				vidBar.barScaleY = percObjectHeight * percSliderHeight;
+				vidBar.barScaleX = percObjectHeight * percSliderHeight;
 			}
 			scrollUpperVid = 0;
-			scrollLowerVid = vidBar.height - vidBar.barHeightScaled;
+			scrollLowerVid = vidBar.width - vidBar.barWidthScaled;
 			
-			vidBar.barY = scrollUpperVid;
+			vidBar.barX = scrollUpperVid;
+			trace(scrollUpperVid);
 			
-			objectUpper = container.x;
-			objectLower = container.x + (373 - (container.width));
+			objectUpper = 0;
+			objectLower = 0 + (380 - (container.width));
 			objectRange = objectUpper - objectLower;
 		}
 		
 		private function objectY():void
 		{
-			var moveDrag:Number 	= vidBar.barY - scrollUpperVid;
+			var moveDrag:Number 	= vidBar.barX - scrollUpperVid;
 			var procentDrag:Number 	= moveDrag / scrollLowerVid;
 			var objectMove:Number 	= procentDrag * objectRange;
 			
@@ -268,10 +310,16 @@ package com.irzal.yt.media.thumbs
 		
 		private function createBg():void
 		{
-			graphics.beginFill(0x666666, 0.5);
+			graphics.beginFill(0x666666, 0.8);
 			graphics.drawRect(0, 0, 380, 230);
 			graphics.endFill();
 		}
+		
+		/*public function destroyLast():void
+		{
+			var last:int = container.numChildren;
+			container.removeChildAt(last - 1);
+		}*/
 	}
 
 }

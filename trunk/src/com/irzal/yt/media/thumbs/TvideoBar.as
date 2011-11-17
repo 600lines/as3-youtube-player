@@ -10,7 +10,7 @@ package com.irzal.yt.media.thumbs
 	 * ...
 	 * @author dedet
 	 */
-	internal class TvideoBar extends Sprite
+	public class TvideoBar extends Sprite
 	{
 		private var bar:Sprite;
 		
@@ -35,13 +35,14 @@ package com.irzal.yt.media.thumbs
 		private function bg():void 
 		{
 			graphics.beginFill(0x888888, 1);
-			graphics.drawRect(0, 0, 10, 200);
+			graphics.drawRect(0, 0, 200, 10);
 			graphics.endFill();
 		}
 		
 		private function onMouseEventBar(e:MouseEvent):void 
 		{
-			var rect:Rectangle = new Rectangle(0, 0, 0, (200-Math.round(bar.height)));
+			var rect:Rectangle = new Rectangle(0, 0, 200-Math.round(bar.width),0);
+			//var rect:Rectangle = new Rectangle(0, 0, 190,0);
 			
 			switch(e.type)
 			{
@@ -66,8 +67,8 @@ package com.irzal.yt.media.thumbs
 		{
 			bar = new Sprite();
 			bar.buttonMode = true;
-			bar.graphics.beginFill(0xFFFFFF, 1);
-			bar.graphics.drawRect( 0, 0, 10, 40);
+			bar.graphics.beginFill(0xf6f6f6, 1);
+			bar.graphics.drawRect( 0, 0, 50, 10);
 			bar.graphics.endFill();
 			addChild(bar);
 		}
@@ -75,42 +76,45 @@ package com.irzal.yt.media.thumbs
 		/**
 		 * 
 		 */
-		public function get barHeightReset():Number
+		public function get barWidthReset():Number
 		{
-			bar.height = 10;
-			return bar.height;
+			bar.width = 50;
+			return bar.width;
 		}
 		
 		/**
 		 * 
 		 */
-		public function get barHeightScaled():Number
+		public function get barWidthScaled():Number
 		{
-			return bar.height;
+			return bar.width;
 		}
 		
 		/**
 		 * 
 		 */
-		public function  set barScaleY(scale:Number):void
+		public function  set barScaleX(scale:Number):void
 		{
-			bar.scaleY = scale;
+			if (scale < 0.3)
+			{
+				bar.scaleX = 0.3
+			} else bar.scaleX = scale;
 		}
 		
 		/**
 		 * 
 		 */
-		public function get barY():Number
+		public function get barX():Number
 		{
-			return bar.y;
+			return bar.x;
 		}
 		
 		/**
 		 * 
 		 */
-		public function set barY(y:Number):void
+		public function set barX(x:Number):void
 		{
-			bar.y = y;
+			bar.x = x;
 		}
 	}
 }

@@ -21,6 +21,7 @@ package com.irzal.yt.media.thumbs
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.display.Loader;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
@@ -70,13 +71,17 @@ package com.irzal.yt.media.thumbs
 		 * @param	url URL for thumbnail image
 		 * @param	id Video ID 
 		 */
-		public function loadThumbs(id:String, url:String):void
+		public function loadThumbs(id:String, url:String=null):void
 		{
 			this.name 	= id;
 			loader 		= new Loader();
-			loader.load(new URLRequest(url));
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
-			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+			if (url)
+			{
+				loader.load(new URLRequest(url));
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
+				loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+				//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR
+			}
 			createBg();
 			createProgresBar();
 		}
@@ -94,13 +99,12 @@ package com.irzal.yt.media.thumbs
 			//---
 			addChildAt(loader,0);
 			destroy();
-			
 		}
 		
 		/**
 		 * 
 		 */
-		public function set duration(dur:String):void
+		public function duration(dur:String=null):void
 		{
 			var _dur:int = Number(dur);
 			var strMinute:String;
@@ -109,7 +113,10 @@ package com.irzal.yt.media.thumbs
 			var scd:Number = Math.floor(_dur % 60);
 			(mnt < 10)? strMinute = "0" + mnt.toString():strMinute = mnt.toString();
 			(scd < 10)? strSecond = "0" + scd.toString():strSecond = scd.toString();
-			_duration = strMinute + ":" + strSecond;
+			if (dur == "more")
+			{
+				_duration = "more";
+			} else _duration = strMinute + ":" + strSecond;
 			durationText();
 		}
 		

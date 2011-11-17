@@ -6,7 +6,7 @@ package com.irzal
 	import com.irzal.yt.media.VideoPlayer;
 	import com.irzal.yt.events.DataEvents;
 	import com.irzal.yt.events.VideoEvents
-	import flash.events.VideoEvent;
+	import com.irzal.yt.data.DataType;
 	import com.irzal.yt.events.Tevent;
 	
 	import flash.display.Sprite;
@@ -24,7 +24,7 @@ package com.irzal
 		private var data:Data;
 		private var vidPlayer:VideoPlayer;
 		private var container:Tcontainer;
-		private var blur:BlurFilter = new BlurFilter(10, 10, 1);
+		private var blur:BlurFilter = new BlurFilter(5, 5, 1);
 		private var currentPlay:String;
 		
 		public function Test() 
@@ -41,20 +41,29 @@ package com.irzal
 			vidPlayer.addEventListener(VideoEvents.READY, onVideoEvent);
 			vidPlayer.addEventListener(VideoEvents.ENDED, onVideoEvent);
 			vidPlayer.addEventListener(VideoEvents.PAUSE, onVideoEvent);
-			addChild(vidPlayer);			
+			//addChild(vidPlayer);			
 		}
 		
 		private function onContainerClick(e:Tevent):void 
 		{
-			trace("e.data",e.data);
-			if (currentPlay == e.data) vidPlayer.resumeVideo()
-			else 
+			switch(e.data)
 			{
-				vidPlayer.playVideo(e.data);
-				currentPlay = e.data;
+				case true:
+					trace(e.data);
+					data.youtubeUser();
+					data.addEventListener(DataEvents.DATA_COMPLETE, onData);
+				break;
+			default:
+				if (currentPlay == e.data) vidPlayer.resumeVideo()
+				else 
+				{
+					vidPlayer.playVideo(e.data);
+					currentPlay = e.data;
+				}
+				container.visible = false;
+				vidPlayer.enable();
 			}
-			container.visible = false;
-			vidPlayer.enable();
+			
 		}
 		
 		private function onVideoEvent(e:Event):void 
@@ -81,11 +90,22 @@ package com.irzal
 		
 		private function onData(e:Event):void 
 		{
-			addChild(container);
-			container.y = 20;
-			container.x = 150;
+			data.removeEventListener(DataEvents.DATA_COMPLETE, onData);
+			//---
+			if(!container.stage)
+			{
+				addChild(container);
+				container.y = 80;
+				container.x = 150;
+			}
 			container.setThumbnails();
 			//container.addEventListener(Tevent.CLICK, onContainer);
+			
+			if (!vidPlayer.stage)
+			{
+				vidPlayer.videoFirsID = data.getData(0, DataType.VIDEO_ID);
+				addChildAt(vidPlayer, 0);
+			}
 		}
 	}
 
