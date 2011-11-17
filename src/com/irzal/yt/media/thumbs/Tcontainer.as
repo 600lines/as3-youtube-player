@@ -82,16 +82,16 @@ package com.irzal.yt.media.thumbs
 		 */
 		public function setThumbnails():void
 		{
-			//var dataLength:int = _data.maxFeedResult;
-			var dataLength:int;// = _data.getDataLength();
+			var dataLength:int;
 			var i:int;
 			var j:int = _data.startIndex - 1;
-			trace("entry",_data.entryLength());
-			//trace(_data.getCurrentPage());
+			//remmove from stage last child in
 			if (container.numChildren > 1)
-				{
-					container.removeChildAt(container.numChildren - 1);
-				}
+			{
+				container.removeChildAt(container.numChildren - 1);
+			}
+			
+			//check for nextpage
 			if (_data.nextPage)
 			{
 				dataLength = _data.maxFeedResult + 1;
@@ -99,10 +99,7 @@ package com.irzal.yt.media.thumbs
 			
 			while (i < dataLength) 
 			{
-				//trace("j",j);
 				tArray[j] = new Tloader();
-				//trace(_data.nextPage)
-				//trace(i == (dataLength - 1));
 				switch(_data.nextPage && i==(dataLength-1))
 				{
 					case true:
@@ -135,7 +132,6 @@ package com.irzal.yt.media.thumbs
 			vidBar.x = 100;
 			addChild(vidBar);
 			checkObjectDragHeight();
-			//vidBar.rotation = -90;
 			
 			//chek vidBar visible
 			if (vidBar.visible == false)
@@ -157,7 +153,6 @@ package com.irzal.yt.media.thumbs
 			
 			vidBar.addEventListener(Tevent.MOVE, onVidTevent);
 			
-			//createMask(detail);
 			createMask(this);
 			createBg();
 		}
@@ -191,7 +186,6 @@ package com.irzal.yt.media.thumbs
 				case MouseEvent.CLICK:
 					if (child.name == "more")
 					{
-						trace("this will load more videos");
 						dispatchEvent(new Tevent(Tevent.CLICK, _data.nextPage));
 					}
 					else {
@@ -201,12 +195,9 @@ package com.irzal.yt.media.thumbs
 				break;
 				case MouseEvent.MOUSE_OVER:
 					//dispatchEvent(new Event(Tevent.OVER));
-					trace("parent.getChildIndex(child)",parent.getChildIndex(child));
-					trace("_data.getDataLength",_data.getDataLength());
 					if (child.name == "more")
 					{
 						detail.description("Load More playlist");
-						trace(parent.getChildIndex(child));
 					}
 					else {
 						var title:String 		= _data.getData(parent.getChildIndex(child) , DataType.MEDIA_TITLE);
@@ -314,12 +305,6 @@ package com.irzal.yt.media.thumbs
 			graphics.drawRect(0, 0, 380, 230);
 			graphics.endFill();
 		}
-		
-		/*public function destroyLast():void
-		{
-			var last:int = container.numChildren;
-			container.removeChildAt(last - 1);
-		}*/
 	}
 
 }

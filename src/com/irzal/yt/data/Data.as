@@ -61,6 +61,7 @@ package com.irzal.yt.data
 			{
 				throw new Error("Instantiation failed: Use Data.getInstance() instead of new.");
 			}
+			
 			if (instance == null)
 			{
 				_dataArray = [];
@@ -92,10 +93,6 @@ package com.irzal.yt.data
 			setupLoader = new URLLoader();
 			setupLoader.load(new URLRequest("Setup.xml"));
 			setupLoader.addEventListener(Event.COMPLETE, setupComplete);
-			/*if (_dataArray == null)
-			{
-				_dataArray = [];
-			}*/
 		}
 		
 		private function setupComplete(e:Event):void 
@@ -114,23 +111,28 @@ package com.irzal.yt.data
 		public function youtubeUser(maxResult:int = 0, feedIndex:int = 0, userId:String = null):void
 		{
 			urLoader = new URLLoader();
+			
 			if (userId != null)
 			{
 				_youtubeUser = userId;
 			}
+			
 			if (maxResult == 0)
 			{
 				maxResult = maxFeedResult;
 			}
+			
 			if (feedIndex == 0)
 			{
 				feedIndex = _feedIndexStart;
 			}
+			
 			urLoader.addEventListener(ProgressEvent.PROGRESS, urLoaderProg);
 			urLoader.addEventListener(Event.COMPLETE, urLoaderComplete);
 			
 			//dynamic feed types
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + feedType + "?v=2"));
+			
 			//old grep data
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
 			

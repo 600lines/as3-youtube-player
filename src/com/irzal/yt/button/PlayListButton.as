@@ -37,6 +37,7 @@ package com.irzal.yt.button
 			butt = new Sprite();
 			butt.buttonMode = true;
 			butt.mouseChildren = false;
+			butt.visible = false;
 			addChild(butt);
 			
 			bitmap = new Pbutton();
