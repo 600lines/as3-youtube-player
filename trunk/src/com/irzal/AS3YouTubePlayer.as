@@ -109,10 +109,11 @@ package com.irzal
 					//trace("ended");
 					vidPlayer.disable();
 					container.visible = true;
+					closeButton.visible = true;
 				break;
 				case VideoEvents.PAUSE:
-					vidPlayer.disable();
-					container.visible = true;
+					/*vidPlayer.disable();
+					container.visible = true;*/
 				break;
 				default:
 			}
