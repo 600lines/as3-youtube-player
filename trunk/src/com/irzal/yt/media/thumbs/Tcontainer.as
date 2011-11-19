@@ -36,13 +36,15 @@ package com.irzal.yt.media.thumbs
 	 */
 	public class Tcontainer extends Sprite 
 	{
-		private var container:Sprite;
 		private var _data:Data;
+		private var container:Sprite;
 		private var tArray:Array = [];
 		private var detail:Tdetail;
 		private var scrollBar:TdetailBar;
 		private var vidBar:TvideoBar;
 		private var thumbMask:Sprite;
+		
+		private var firstLoad:int;
 		
 		private var scrollUpper:Number;
 		private var scrollLower:Number;
@@ -127,34 +129,46 @@ package com.irzal.yt.media.thumbs
 				j += 1;
 				i += 1;
 			}
-			
-			vidBar.y = container.y + container.height + 15;
-			vidBar.x = 100;
-			addChild(vidBar);
+			if (firstLoad == 0)
+			{
+				firstLoad = 1;
+				createDetailAndBars(true);
+			}
 			checkObjectDragHeight();
 			
-			//chek vidBar visible
-			if (!vidBar.visible)
+		}
+		
+		private function createDetailAndBars($firstLoad:Boolean):void
+		{
+			if ($firstLoad)
 			{
-				detail.y 	= container.y + container.height + 10;
-			} else
-			{
-				detail.y 	= vidBar.y + vidBar.height + 5;
+				vidBar.y = container.y + container.height + 15;
+				vidBar.x = 100;
+				addChild(vidBar);
+				
+				//chek vidBar visible
+				if (!vidBar.visible)
+				{
+					detail.y 	= container.y + container.height + 10;
+				} else
+				{
+					detail.y 	= vidBar.y + vidBar.height + 5;
+				}
+				detail.addEventListener(Tevent.WHEEL, onTevent);
+				addChild(detail);
+				
+				scrollBar.x = detail.x + detail.width - scrollBar.width + 2;
+				scrollBar.y = detail.y;
+				addChild(scrollBar);
+				
+				scrollBar.visible = false;
+				scrollBar.addEventListener(Tevent.MOVE, onTevent);
+				
+				vidBar.addEventListener(Tevent.MOVE, onVidTevent);
+				
+				createMask(this);
+				createBg();
 			}
-			detail.addEventListener(Tevent.WHEEL, onTevent);
-			addChild(detail);
-			
-			scrollBar.x = detail.x + detail.width - scrollBar.width + 2;
-			scrollBar.y = detail.y;
-			addChild(scrollBar);
-			
-			scrollBar.visible = false;
-			scrollBar.addEventListener(Tevent.MOVE, onTevent);
-			
-			vidBar.addEventListener(Tevent.MOVE, onVidTevent);
-			
-			createMask(this);
-			createBg();
 		}
 		
 		private function onVidTevent(e:Event):void 
@@ -253,7 +267,7 @@ package com.irzal.yt.media.thumbs
 		{
 			var moveDrag:Number 	= scrollBar.barY - scrollUpper;
 			var procentDrag:Number 	= moveDrag / scrollLower;
-			detail.scrollText		= procentDrag * detail.textMaxScroll;
+			detail.scrollText		= procentDrag * detail.textMaxScroll;			
 		}
 		
 		private function checkObjectDragHeight():void
