@@ -78,7 +78,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Create thumbnail
 		 */
 		public function setThumbnails():void
 		{
@@ -144,7 +144,7 @@ package com.irzal.yt.media.thumbs
 			detail.addEventListener(Tevent.WHEEL, onTevent);
 			addChild(detail);
 			
-			scrollBar.x = detail.x + detail.width - scrollBar.width;
+			scrollBar.x = detail.x + detail.width - scrollBar.width + 2;
 			scrollBar.y = detail.y;
 			addChild(scrollBar);
 			
