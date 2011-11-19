@@ -41,8 +41,8 @@ package com.irzal.yt.media.thumbs
 		
 		private function onMouseEventBar(e:MouseEvent):void 
 		{
-			var child:Object 	= e.target;
-			var parent:Object 	= e.currentTarget;
+			//var child:Object 	= e.target;
+			//var parent:Object 	= e.currentTarget;
 			var rect:Rectangle = new Rectangle(0, 0, 0, (this.height - Math.round(bar.height)));
 			
 			switch(e.type)
