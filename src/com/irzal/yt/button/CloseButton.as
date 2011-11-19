@@ -5,7 +5,7 @@ package com.irzal.yt.button
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	/**
-	 * ...
+	 * Create close button
 	 * @author dedet
 	 */
 	public class CloseButton extends Sprite

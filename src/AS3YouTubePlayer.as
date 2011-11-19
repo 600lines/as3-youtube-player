@@ -1,10 +1,9 @@
-package com.irzal 
+package  
 {
 	import com.irzal.yt.button.CloseButton;
 	import com.irzal.yt.button.PlayListButton;
 	import com.irzal.yt.data.Data;
 	import com.irzal.yt.media.thumbs.Tcontainer;
-	import com.irzal.yt.media.thumbs.Tloader;
 	import com.irzal.yt.media.VideoPlayer;
 	import com.irzal.yt.events.DataEvents;
 	import com.irzal.yt.events.VideoEvents
@@ -23,8 +22,6 @@ package com.irzal
 	 */
 	public class AS3YouTubePlayer extends Sprite 
 	{
-		private var blur:BlurFilter = new BlurFilter(5, 5, 1);
-		
 		private var data:Data;
 		private var vidPlayer:VideoPlayer;
 		private var container:Tcontainer;

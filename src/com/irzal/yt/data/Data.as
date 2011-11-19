@@ -41,8 +41,16 @@ package com.irzal.yt.data
 		private var userXML:XML;
 		
 		private var _feedIndexStart:int = 1;
-		//maximum feed result
+		
+		/**
+		 * Maximum number of feed result, from 1-50
+		 */
 		public var maxFeedResult:int = 25;
+		
+		/**
+		 * Your Setup.xml file path
+		 */
+		public var setupPath:String = "";
 		
 		//manual name space
 		private var ns:Namespace 		= new Namespace("http://www.w3.org/2005/Atom");
@@ -91,7 +99,7 @@ package com.irzal.yt.data
 		public function loadSetup():void
 		{
 			setupLoader = new URLLoader();
-			setupLoader.load(new URLRequest("Setup.xml"));
+			setupLoader.load(new URLRequest(setupPath + "Setup.xml"));
 			setupLoader.addEventListener(Event.COMPLETE, setupComplete);
 		}
 		
@@ -99,20 +107,20 @@ package com.irzal.yt.data
 		{
 			setupLoader.removeEventListener(Event.COMPLETE, setupComplete);
 			userXML = XML (setupLoader.data);
-			youtubeUser(maxFeedResult, _feedIndexStart, userXML.user);
+			youtubeUser(userXML.user, maxFeedResult, _feedIndexStart);
 		}
 		
 		/**
-		 * 
-		 * @param	feedIndex
-		 * @param	maxResult
-		 * @param	userId
+		 * Load YouTube feed data
+		 * @param	userId YouTube user ID
+		 * @param	maxResult maximum number of feed
+		 * @param	feedIndex feed index start
 		 */
-		public function youtubeUser(maxResult:int = 0, feedIndex:int = 0, userId:String = null):void
+		public function youtubeUser(userId:String = "", maxResult:int = 0, feedIndex:int = 0):void
 		{
 			urLoader = new URLLoader();
 			
-			if (userId != null)
+			if (userId != "")
 			{
 				_youtubeUser = userId;
 			}
@@ -187,8 +195,8 @@ package com.irzal.yt.data
 			
 			j = startIndex - 1;
 			_feedIndexStart = startIndex + itemsPerPage;
-			trace("j", j);
-			trace("_feedIndexStart",_feedIndexStart, "startIndex",startIndex,"itemsPerPage",itemsPerPage);
+			//trace("j", j);
+			//trace("_feedIndexStart",_feedIndexStart, "startIndex",startIndex,"itemsPerPage",itemsPerPage);
 			
 			if (_dataArray["" + feedType + ""] == null)
 			{
@@ -217,8 +225,8 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
-		 * @param	feedType
+		 * Return an array of feed
+		 * @param	feedType Use DataFeed public static properties
 		 * @return
 		 */
 		public function getFeedArray(feedType:String):Array 
@@ -286,7 +294,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Check if next data feed if available
 		 */
 		public function get nextPage():Boolean
 		{
@@ -294,16 +302,19 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Start index number in YouTube feed data
 		 */
 		public function get startIndex():int
 		{
 			return int(userXML.nsOs::startIndex);
 		}
+		
+		/**
+		 * Number entry element in YouTube feed data
+		 * @return
+		 */
 		public function entryLength():int
 		{
-			//return int((userXML.nsOs::entry.length())
-			//trace("entry",userXML.nsOs::entry.length());
 			return userXML.ns::entry.length();
 		}
 	}

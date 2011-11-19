@@ -7,7 +7,7 @@ package com.irzal.yt.button
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	/**
-	 * ...
+	 * Create playlist button
 	 * @author dedet
 	 */
 	public class PlayListButton extends Sprite

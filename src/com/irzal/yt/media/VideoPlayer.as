@@ -87,7 +87,7 @@ package com.irzal.yt.media
 		{
 			//Object(e).data onStateChange
 			//values are unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5)
-			trace(Object(e).data)
+			//trace(Object(e).data)
 			switch(Object(e).data)
 			{
 				case -1:

@@ -134,7 +134,7 @@ package com.irzal.yt.media.thumbs
 			checkObjectDragHeight();
 			
 			//chek vidBar visible
-			if (vidBar.visible == false)
+			if (!vidBar.visible)
 			{
 				detail.y 	= container.y + container.height + 10;
 			} else
@@ -273,7 +273,7 @@ package com.irzal.yt.media.thumbs
 			scrollLowerVid = vidBar.width - vidBar.barWidthScaled;
 			
 			vidBar.barX = scrollUpperVid;
-			trace(scrollUpperVid);
+			//trace(scrollUpperVid);
 			
 			objectUpper = 0;
 			objectLower = 0 + (380 - (container.width));
