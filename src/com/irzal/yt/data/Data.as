@@ -18,6 +18,7 @@
  */
 package com.irzal.yt.data 
 {
+	import flash.events.DataEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.ProgressEvent;
@@ -140,7 +141,6 @@ package com.irzal.yt.data
 			
 			//dynamic feed types
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + feedType + "?v=2"));
-			
 			//old grep data
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
 			
@@ -150,13 +150,14 @@ package com.irzal.yt.data
 		
 		private function urLoaderProg(e:ProgressEvent):void 
 		{
-			//put progress here
-			//trace("getting youtube data");
+			var progress:Number = e.bytesLoaded / e.bytesTotal;
+			dispatchEvent(new DataEvents(DataEvents.DATA_PROGRESS, progress));
 		}
 		
 		private function urLoaderComplete(e:Event):void 
 		{
 			urLoader.removeEventListener(Event.COMPLETE, urLoaderComplete);
+			urLoader.removeEventListener(ProgressEvent.PROGRESS, urLoaderProg);
 			//---
 			userXML = XML(urLoader.data);
 			setData(DataFeeds.FEED_UPLOADS);
@@ -221,7 +222,7 @@ package com.irzal.yt.data
 				j+=1;
 				i+=1;
 			}
-			dispatchEvent(new Event(DataEvents.DATA_COMPLETE));
+			dispatchEvent(new DataEvent(DataEvents.DATA_COMPLETE));
 		}
 		
 		/**
