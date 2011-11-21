@@ -51,7 +51,7 @@ package com.irzal.yt.data
 		/**
 		 * Your Setup.xml file path
 		 */
-		public var setupPath:String = "";
+		public var setupPath:String = "/swfs/youtube/";
 		
 		//manual name space
 		private var ns:Namespace 		= new Namespace("http://www.w3.org/2005/Atom");
