@@ -135,7 +135,6 @@ package com.irzal.yt.media.thumbs
 				createDetailAndBars(true);
 			}
 			checkObjectDragHeight();
-			
 		}
 		
 		private function createDetailAndBars($firstLoad:Boolean):void
