@@ -51,7 +51,7 @@ package com.irzal.yt.data
 		/**
 		 * Your Setup.xml file path
 		 */
-		public var setupPath:String = "/swfs/youtube/";
+		public var setupPath:String = "";// "/swfs/youtube/";
 		
 		//manual name space
 		private var ns:Namespace 		= new Namespace("http://www.w3.org/2005/Atom");
@@ -188,6 +188,8 @@ package com.irzal.yt.data
 		
 		private function setData(feedType:String):void
 		{
+			var regEx:RegExp = new RegExp("(http(s)?://[a-zA-Z0-9/@?#&+._=-]*)", "gi");
+			
 			var entryLength:int 	= userXML.ns::entry.length();
 			var startIndex:int 		= int(userXML.nsOs::startIndex);
 			var itemsPerPage:int 	= int(userXML.nsOs::itemsPerPage);
@@ -217,7 +219,11 @@ package com.irzal.yt.data
 				var _description:String 	= userXML.ns::entry[i].nsMedia::group.nsMedia::description;
 				var _thumbnail:String 		= userXML.ns::entry[i].nsMedia::group.nsMedia::thumbnail[0].@url;
 				_dataArray["" + feedType + ""][j]	= { 
-					id:_id, date:_date.slice(0, 10), duration:_duration, title:_title, description:_description, thumbnail:_thumbnail
+					id:_id, date:_date.slice(0, 10), 
+					duration:_duration, 
+					title:_title, 
+					description:_description.replace(regEx, "<u><a href='$1' target='_blank'>$1</a></u>"), 
+					thumbnail:_thumbnail
 					};
 				j+=1;
 				i+=1;
