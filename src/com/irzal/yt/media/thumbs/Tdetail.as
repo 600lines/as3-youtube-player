@@ -33,12 +33,13 @@ package com.irzal.yt.media.thumbs
 	{
 		public var tField:TextField;
 		private var tFormat:TextFormat
-		
+		private var regEx:RegExp;
 		/**
 		 * Constractor
 		 */
 		public function Tdetail()
 		{
+			//regEx = new RegExp("(http://[a-zA-Z0-9/@?#&+._=-]*)", "gi");
 			formatText();
 		}
 		
@@ -52,6 +53,7 @@ package com.irzal.yt.media.thumbs
 			tField 						= new TextField();
 			//tField.background			= true;
 			//tField.backgroundColor		= 0x666666;
+			tField.selectable			= false;
 			tField.multiline 			= true;
 			tField.mouseWheelEnabled 	= true;
 			tField.width				= 370;
@@ -62,6 +64,7 @@ package com.irzal.yt.media.thumbs
 			addChild(tField);
 			
 			tField.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseEvent);
+			
 			//explenation text
 			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
 			tField.htmlText += "\nClick the thumbnail to play video"
@@ -77,9 +80,8 @@ package com.irzal.yt.media.thumbs
 		 * @param	title
 		 * @param	longDescription
 		 */
-		public function description(title:String,longDescription:String=""):void
+		public function description(title:String, longDescription:String = ""):void
 		{
-			//tField.setTextFormat(tFormat);
 			tField.htmlText = "<b>" + title + "</b>\n\r";
 			tField.htmlText += longDescription.split("\r").join("");
 		}
