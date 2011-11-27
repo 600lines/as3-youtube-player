@@ -47,9 +47,7 @@ package com.irzal.yt.media.thumbs
 		private var durFormat:TextFormat;
 		
 		private var _duration:String;
-		/**
-		 * 
-		 */
+
 		public function Tloader() 
 		{
 			this.buttonMode 	= true;
@@ -102,7 +100,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Video duration text
 		 */
 		public function duration(dur:String=null):void
 		{

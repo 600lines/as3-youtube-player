@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011  Irzal Idris
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/> 
+	
+	http://irzal.com
+ */
 package com.irzal.yt.media.thumbs 
 {
 	import flash.display.Sprite;
@@ -75,7 +93,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Return original bar height
 		 */
 		public function get barHeightReset():Number
 		{
@@ -84,7 +102,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Return bar height scaled
 		 */
 		public function get barHeightScaled():Number
 		{
@@ -92,7 +110,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Set bar scaleY
 		 */
 		public function  set barScaleY(scale:Number):void
 		{
@@ -100,7 +118,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Get bar y position
 		 */
 		public function get barY():Number
 		{
@@ -108,7 +126,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Set bar y position
 		 */
 		public function set barY(y:Number):void
 		{

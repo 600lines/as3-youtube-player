@@ -31,7 +31,7 @@ package com.irzal.yt.media.thumbs
 	import com.irzal.yt.data.DataType;
 	
 	/**
-	 * ...
+	 * Create a container for thumbnail, video bar, and detail
 	 * @author dedet
 	 */
 	public class Tcontainer extends Sprite 
@@ -57,15 +57,16 @@ package com.irzal.yt.media.thumbs
 		
 		private var glow:GlowFilter = new GlowFilter(0xFF0000, 1, 20, 20, 1, 1);
 		
-		/**
-		 * 
-		 */
 		public function Tcontainer() 
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
+		/**
+		 * instansiate
+		 * @param	e
+		 */
 		private function init(e:Event=null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
@@ -137,6 +138,10 @@ package com.irzal.yt.media.thumbs
 			checkObjectDragHeight();
 		}
 		
+		/**
+		 * Create detail dan bar
+		 * @param	$firstLoad check for first load
+		 */
 		private function createDetailAndBars($firstLoad:Boolean):void
 		{
 			if ($firstLoad)
@@ -250,6 +255,9 @@ package com.irzal.yt.media.thumbs
 			scrollBar.barY = scrollUpper;
 		}
 		
+		/**
+		 * Detail scrool button
+		 */
 		private function scrollButton():void
 		{
 			scrollBar.barY = scrollUpper + (((detail.scrollText+7) * scrollLower) / detail.textMaxScroll);
@@ -262,6 +270,9 @@ package com.irzal.yt.media.thumbs
 			}
 		}
 		
+		/**
+		 * TextField scroll
+		 */
 		private function textFieldScroll():void
 		{
 			var moveDrag:Number 	= scrollBar.barY - scrollUpper;
@@ -269,6 +280,9 @@ package com.irzal.yt.media.thumbs
 			detail.scrollText		= procentDrag * detail.textMaxScroll;			
 		}
 		
+		/**
+		 * check container width
+		 */
 		private function checkObjectDragHeight():void
 		{
 			var percObjectHeight:Number = vidBar.width / container.width;
@@ -285,14 +299,19 @@ package com.irzal.yt.media.thumbs
 			scrollUpperVid = 0;
 			scrollLowerVid = vidBar.width - vidBar.barWidthScaled;
 			
-			vidBar.barX = scrollUpperVid;
-			//trace(scrollUpperVid);
-			
 			objectUpper = 0;
 			objectLower = 0 + (380 - (container.width));
 			objectRange = objectUpper - objectLower;
+			
+			var objectDrag:Number = objectUpper - container.x;
+			var procentObj:Number = objectDrag / objectRange;
+			vidBar.barX = vidBar.width*procentObj;
+			
 		}
 		
+		/**
+		 * check container x position
+		 */
 		private function objectY():void
 		{
 			var moveDrag:Number 	= vidBar.barX - scrollUpperVid;
