@@ -29,7 +29,7 @@ package com.irzal.yt.media
 	import flash.filters.BlurFilter;
 	import flash.events.VideoEvent
 	/**
-	 * ...
+	 * Load Video player from YouTube
 	 * @author dedet
 	 */
 	public class VideoPlayer extends Sprite
@@ -149,7 +149,7 @@ package com.irzal.yt.media
 		}
 		
 		/**
-		 * 
+		 * Disable video mouse and blur
 		 */
 		public function disable():void
 		{
@@ -158,7 +158,7 @@ package com.irzal.yt.media
 		}
 		
 		/**
-		 * 
+		 * Enable video mouse remove blur
 		 */
 		public function enable():void
 		{
@@ -174,6 +174,9 @@ package com.irzal.yt.media
 			player.playVideo();
 		}
 		
+		/**
+		 * Set first video to display
+		 */
 		public function set videoFirsID(value:String):void 
 		{
 			_videoFirsID = value;

@@ -186,6 +186,10 @@ package com.irzal.yt.data
 			//setData(Data.FEED_UPLOADS);
 		}*/
 		
+		/**
+		 * Use DataFeeds
+		 * @param	feedType
+		 */
 		private function setData(feedType:String):void
 		{
 			var regEx:RegExp = new RegExp("(http(s)?://[a-zA-Z0-9/@?#&+._=-]*)", "gi");
@@ -198,18 +202,12 @@ package com.irzal.yt.data
 			
 			j = startIndex - 1;
 			_feedIndexStart = startIndex + itemsPerPage;
-			//trace("j", j);
-			//trace("_feedIndexStart",_feedIndexStart, "startIndex",startIndex,"itemsPerPage",itemsPerPage);
 			
 			if (_dataArray["" + feedType + ""] == null)
 			{
 				_dataArray["" + feedType + ""] = [];
 			}
 			
-			/*if (nextPage)
-			{
-				entryLength += 1;
-			}*/
 			while (i < entryLength)
 			{
 				var _id:String 				= userXML.ns::entry[i].nsMedia::group.nsYt::videoid;
@@ -219,10 +217,11 @@ package com.irzal.yt.data
 				var _description:String 	= userXML.ns::entry[i].nsMedia::group.nsMedia::description;
 				var _thumbnail:String 		= userXML.ns::entry[i].nsMedia::group.nsMedia::thumbnail[0].@url;
 				_dataArray["" + feedType + ""][j]	= { 
-					id:_id, date:_date.slice(0, 10), 
+					id:_id,
+					date:_date.slice(0, 10), 
 					duration:_duration, 
-					title:_title, 
-					description:_description.replace(regEx, "<u><a href='$1' target='_blank'>$1</a></u>"), 
+					title:"<span class='title'>"+_title+"</span>", 
+					description:_description.replace(regEx, "<a href='$1' target='_blank'>$1</a>"), 
 					thumbnail:_thumbnail
 					};
 				j+=1;
@@ -233,8 +232,8 @@ package com.irzal.yt.data
 		
 		/**
 		 * Return an array of feed
-		 * @param	feedType Use DataFeed public static properties
-		 * @return
+		 * @param	feedType Use DataFeed public static const properties
+		 * @return an Array of data feed
 		 */
 		public function getFeedArray(feedType:String):Array 
 		{
@@ -242,10 +241,10 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Get individual data
 		 * @param	index
 		 * @param	dataType
-		 * @return
+		 * @return 
 		 */
 		public function getData(index:int, dataType:String):String
 		{
@@ -253,7 +252,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Get data length
 		 * @return
 		 */
 		public function getDataLength(feedType:String=null):int
@@ -263,7 +262,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Get current page number
 		 */
 		public function get getCurrentPage():Number
 		{
@@ -274,18 +273,17 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Get current page length
 		 */
 		public function get getPageLength():Number
 		{
 			var totalResults:Number = Number(userXML.nsOs::totalResults);
 			var itemsPerPage:Number = Number(userXML.nsOs::itemsPerPage);
-			//return Math.ceil(totalResults / itemsPerPage);
 			return Math.ceil(totalResults / itemsPerPage);
 		}
 		
 		/**
-		 * 
+		 * Get YouTube user ID
 		 */
 		public function get getUserId():String
 		{
@@ -293,7 +291,7 @@ package com.irzal.yt.data
 		}
 		
 		/**
-		 * 
+		 * Get feed index start on current page
 		 */
 		public function get getFeedIndexStart():int 
 		{

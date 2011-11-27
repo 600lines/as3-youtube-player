@@ -20,7 +20,11 @@ package com.irzal.yt.media.thumbs
 {
 	import com.irzal.yt.events.Tevent;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFieldAutoSize
@@ -31,7 +35,8 @@ package com.irzal.yt.media.thumbs
 	 */
 	internal class Tdetail extends Sprite 
 	{
-		public var tField:TextField;
+		private var cssPath:String = "css/";
+		private var tField:TextField;
 		private var tFormat:TextFormat
 		private var regEx:RegExp;
 		/**
@@ -39,12 +44,15 @@ package com.irzal.yt.media.thumbs
 		 */
 		public function Tdetail()
 		{
-			//regEx = new RegExp("(http://[a-zA-Z0-9/@?#&+._=-]*)", "gi");
 			formatText();
 		}
 		
 		private function formatText():void
 		{
+			var cssLoader:URLLoader		= new URLLoader();
+			cssLoader.load(new URLRequest(cssPath + "YouTube.css"));
+			cssLoader.addEventListener(Event.COMPLETE, onCssLoad);
+			
 			tFormat 					= new TextFormat();
 			tFormat.color 				= 0xFFFFFF;
 			tFormat.font				= "MS Sans Serif";
@@ -52,8 +60,8 @@ package com.irzal.yt.media.thumbs
 			
 			tField 						= new TextField();
 			//tField.background			= true;
-			//tField.backgroundColor		= 0x666666;
-			tField.selectable			= false;
+			//tField.backgroundColor	= 0x666666;
+			//tField.selectable			= false;
 			tField.multiline 			= true;
 			tField.mouseWheelEnabled 	= true;
 			tField.width				= 370;
@@ -64,9 +72,17 @@ package com.irzal.yt.media.thumbs
 			addChild(tField);
 			
 			tField.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseEvent);
+		}
+		
+		private function onCssLoad(e:Event):void 
+		{
+			var css:StyleSheet = new StyleSheet();
+			var obj:Object = new Object();
 			
+			css.parseCSS(e.currentTarget.data);
+			tField.styleSheet = css;
 			//explenation text
-			tField.htmlText = "Mouse over the thumbnail to get title dan description about the video.";
+			tField.htmlText = "<span class='title'>Mouse over the thumbnail to get title dan description about the video.</span>";
 			tField.htmlText += "\nClick the thumbnail to play video"
 		}
 		
@@ -76,13 +92,13 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
-		 * @param	title
-		 * @param	longDescription
+		 * Input descriptiont text
+		 * @param	title Title text
+		 * @param	longDescription Description text
 		 */
 		public function description(title:String, longDescription:String = ""):void
 		{
-			tField.htmlText = "<b>" + title + "</b>\n\r";
+			tField.htmlText = title + "\n\r";
 			tField.htmlText += longDescription.split("\r").join("");
 		}
 		
@@ -104,7 +120,7 @@ package com.irzal.yt.media.thumbs
 		}
 		
 		/**
-		 * 
+		 * Return TextField scrollV
 		 */
 		public function get scrollText():Number
 		{
