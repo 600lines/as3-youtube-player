@@ -27,7 +27,6 @@ package com.irzal.yt.media
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	import flash.filters.BlurFilter;
-	import flash.events.VideoEvent
 	/**
 	 * Load Video player from YouTube
 	 * @author dedet
