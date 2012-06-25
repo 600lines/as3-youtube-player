@@ -145,7 +145,15 @@ package com.irzal.yt.data
 			//urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + Data.FEED_UPLOADS + "?v=2"));
 			
 			//new grep data up to 50 per feed
-			urLoader.load(new URLRequest("http://gdata.youtube.com/feeds/api/users/" + _youtubeUser + "/" + DataFeeds.FEED_UPLOADS + "?start-index=" + feedIndex + "&max-results=" + maxResult + "&v=2"));
+			urLoader.load(new URLRequest(
+				"http://gdata.youtube.com/feeds/api/users/" + 
+				_youtubeUser + "/" + 
+				DataFeeds.FEED_UPLOADS + 
+				"?start-index=" + 
+				feedIndex + 
+				"&max-results=" +
+				maxResult + 
+				"&v=2"));
 		}
 		
 		private function urLoaderProg(e:ProgressEvent):void 
@@ -192,7 +200,7 @@ package com.irzal.yt.data
 		 */
 		private function setData(feedType:String):void
 		{
-			var regEx:RegExp = new RegExp("(http(s)?://[a-zA-Z0-9/@?#&+._=-]*)", "gi");
+			var regEx:RegExp = new RegExp("(http(s)?://[a-zA-Z0-9/@?#!&+._=-]*)", "gi");
 			
 			var entryLength:int 	= userXML.ns::entry.length();
 			var startIndex:int 		= int(userXML.nsOs::startIndex);
@@ -248,7 +256,7 @@ package com.irzal.yt.data
 		 */
 		public function getData(index:int, dataType:String):String
 		{
-			return _dataArray["" + DataFeeds.FEED_UPLOADS + ""][index]["" + dataType + ""];
+			return _dataArray[DataFeeds.FEED_UPLOADS][index][dataType];
 		}
 		
 		/**
@@ -258,7 +266,7 @@ package com.irzal.yt.data
 		public function getDataLength(feedType:String=null):int
 		{
 			if (feedType == null) feedType = DataFeeds.FEED_UPLOADS;
-			return _dataArray["" + feedType + ""].length;
+			return _dataArray[feedType].length;
 		}
 		
 		/**
