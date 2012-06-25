@@ -48,10 +48,11 @@ package com.irzal.yt.events
 			super(type);
 		}
 		
-		override public function clone():Event
+		/*public function clone():Event
 		{
-			return new DataEvents(type, data);
-		}
+			return new DataEvents(type, _data);
+		}*/
+		//public function toString():String;
 		
 		/**
 		 * Return event data
